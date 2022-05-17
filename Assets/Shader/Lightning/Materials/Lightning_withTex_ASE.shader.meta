@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: ab3478f4216a25a449b188506fdb39d2
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _LightningTex: {fileID: 2800000, guid: e7b60bd7fc85dad4793345782a0e725e, type: 3}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
