@@ -27,7 +27,7 @@ Material:
     - _Height: 1
     - _Width: 0.08
     m_Colors:
-    - _Color: {r: 5.656854, g: 5.656854, b: 5.656854, a: 1}
+    - _Color: {r: 2.1185474, g: 2.1185474, b: 2.1185474, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _NoiseOffset: {r: 0, g: 0.1, b: 0, a: 0}
     - _TopVertexOffset: {r: 0.1, g: 0, b: 0, a: 0}

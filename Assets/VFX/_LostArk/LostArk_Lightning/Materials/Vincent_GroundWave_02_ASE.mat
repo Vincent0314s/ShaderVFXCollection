@@ -33,5 +33,5 @@ Material:
     - _Width: 0
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RingColor: {r: 3.9999995, g: 3.9999995, b: 3.9999995, a: 1}
+    - _RingColor: {r: 2.9960785, g: 2.9960785, b: 2.9960785, a: 1}
   m_BuildTextureStacks: []
