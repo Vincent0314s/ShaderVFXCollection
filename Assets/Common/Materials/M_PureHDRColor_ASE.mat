@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Vincent_Tornado_02_ASE 1
-  m_Shader: {fileID: 4800000, guid: 5678b76ba7fc4eb49bf81ed42e0c49c6, type: 3}
+  m_Name: M_PureHDRColor_ASE
+  m_Shader: {fileID: 4800000, guid: 4284b6ba28675db4887f63fed0f2fa21, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -21,16 +21,13 @@ Material:
     m_TexEnvs: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _Dissolve: 0.12
-    - _NoiseSpeed: 1
-    - _TwirlStrength: 5
-    - _WobbleAmount: 0.44
-    - _WobbleFrequency: 0.51
-    - _WobbleSpeed: 0.47
-    - _WobbleStrength: 1.73
+    - _TessEdgeLength: 16
+    - _TessMax: 25
+    - _TessMaxDisp: 25
+    - _TessMin: 10
+    - _TessPhongStrength: 0.5
+    - _TessValue: 16
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 3.2909029, g: 4.7904434, b: 5.7658796, a: 1}
-    - _NoiseSpeed: {r: 0, g: -0.35, b: 0, a: 0}
-    - _TwirlCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _HDRColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
   m_BuildTextureStacks: []
