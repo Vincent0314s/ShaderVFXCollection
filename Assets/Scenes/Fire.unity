@@ -10214,28 +10214,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: VFX_FireTornado
       objectReference: {fileID: 0}
-    - target: {fileID: 6877434031332337734, guid: 64856cc6f26f095499983f0b4b3ae300, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6877434031332337734, guid: 64856cc6f26f095499983f0b4b3ae300, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6877434031332337734, guid: 64856cc6f26f095499983f0b4b3ae300, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6877434031560927464, guid: 64856cc6f26f095499983f0b4b3ae300, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6877434031560927464, guid: 64856cc6f26f095499983f0b4b3ae300, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6877434031560927464, guid: 64856cc6f26f095499983f0b4b3ae300, type: 3}
-      propertyPath: m_LocalScale.z
+    - target: {fileID: 6877434030842475495, guid: 64856cc6f26f095499983f0b4b3ae300, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -10318,7 +10298,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933233787}
   m_LocalRotation: {x: 0.35563377, y: 0.2359448, z: -0.093292885, w: 0.8995283}
-  m_LocalPosition: {x: -4.2, y: 7.97, z: -6.15}
+  m_LocalPosition: {x: -6.52, y: 12.4, z: -10.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
