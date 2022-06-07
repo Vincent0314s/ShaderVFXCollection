@@ -26,7 +26,7 @@ Material:
     m_Floats:
     - _AlphaCutoff: 0.5
     - _Float0: 0
-    - _ShowFire: 0.471
+    - _ShowFire: 0
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _FireOffset: {r: 0, g: -1, b: 0, a: 0}
