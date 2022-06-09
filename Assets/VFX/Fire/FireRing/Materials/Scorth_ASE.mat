@@ -29,8 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _AlphaFade: 1
-    - _ColorFade: 0.573
+    - _AlphaFade: 0.866
+    - _ColorFade: 0.897
     - _DistortionAmount: 0.018
     - _Float2: 0.839
     m_Colors:
