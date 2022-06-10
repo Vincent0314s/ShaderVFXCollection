@@ -21,10 +21,12 @@ Material:
     m_TexEnvs: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _DissolveAmount: 0.245
+    - _DissolveAmount: 0.266
+    - _Float0: 0.32
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 0, g: 0, b: 0, a: 1}
     - _NoiseSpeed: {r: 0.17, g: 0, b: 0, a: 0}
-    - _NoiseTiling: {r: 0.1, g: 2, b: 0, a: 0}
+    - _NoiseTiling: {r: 0.1, g: 3, b: 0, a: 0}
+    - _Vector1: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
