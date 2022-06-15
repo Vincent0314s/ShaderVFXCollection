@@ -18,13 +18,45 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ToonRamp:
+        m_Texture: {fileID: 2800000, guid: 52e66a9243cdfed44b5e906f5910d35b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _ToonRampOffset: 0
-    - _ToonRampSmoothness: 0
+    - _Float0: 0.3
+    - _Max: 1.12
+    - _Min: 1.1
+    - _RimOffset: 0.81
+    - _RimPower: 0
+    - _ShadowOffset: 0.5
+    - _SpecArea: 0.405
+    - _SpecColorLerp: 0.35
+    - _SpecIntensity: 0.342
+    - _ToonRampOffset: 0.62
+    - _ToonRampSmoothness: 1.54
     - __dirty: 0
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimTint: {r: 0.31910816, g: 0.8266167, b: 0.95283014, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
     - _ToonRampTinting: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
