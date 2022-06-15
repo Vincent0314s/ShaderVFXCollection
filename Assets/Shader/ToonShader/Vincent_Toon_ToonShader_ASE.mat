@@ -41,7 +41,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _Float0: 0.3
+    - _Float0: 0.28
     - _Max: 1.12
     - _Min: 1.1
     - _RimOffset: 0.81
