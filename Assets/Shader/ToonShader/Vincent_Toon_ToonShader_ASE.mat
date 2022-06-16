@@ -44,6 +44,7 @@ Material:
     - _Float0: 0.28
     - _Max: 1.12
     - _Min: 1.1
+    - _Outlinewidth: 0.02
     - _RimOffset: 0.81
     - _RimPower: 0
     - _ShadowOffset: 0.5
@@ -55,6 +56,7 @@ Material:
     - __dirty: 0
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimTint: {r: 0.31910816, g: 0.8266167, b: 0.95283014, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
