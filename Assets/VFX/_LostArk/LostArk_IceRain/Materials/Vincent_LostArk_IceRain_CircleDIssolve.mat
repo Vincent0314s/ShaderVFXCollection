@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Vincent_LostArk_IceRain_CircleDIssolve
   m_Shader: {fileID: 4800000, guid: 97c88b2f658850a4cb38ae630e98a5bc, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _CONTROLBYPARTICLE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -30,6 +30,8 @@ Material:
     m_Floats:
     - _AlphaClip: 0.5
     - _AlphaCutoff: 0.5
+    - _ControlByParticle: 1
+    - _DissoloveAmount: 1
     - _DissolveAmount: 1
     - _Float0: 1
     - _HDRValue: 3
