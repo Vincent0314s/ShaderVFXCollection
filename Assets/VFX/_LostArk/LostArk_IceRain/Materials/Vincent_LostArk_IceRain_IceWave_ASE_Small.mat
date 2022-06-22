@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 95de76ed3d8ae2b4aa12d63762fb5889, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
@@ -46,7 +46,7 @@ Material:
     - _HDRValue: 3
     - _MaskMax: 1.61
     - _MaskMin: -0.3
-    - _MaskMultiplier: 1.5
+    - _MaskMultiplier: 3
     - _MaxEdge: 1
     - _MinEdge: 0.45
     - _OffsetAmount: 1
