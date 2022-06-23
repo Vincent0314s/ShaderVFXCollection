@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &732309235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 732309236}
+  m_Layer: 0
+  m_Name: SkillPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &732309236
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732309235}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4776152628628325197}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &137327420201757292
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,8 +1743,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -9158373887091854016, guid: a35bfb5a7ab53bc43bda504af69d4807, type: 3}
-  - {fileID: -10445852844373290, guid: a35bfb5a7ab53bc43bda504af69d4807, type: 3}
+  - {fileID: 2100000, guid: 620fe5325a5c1364cb213a707a214112, type: 2}
+  - {fileID: 2100000, guid: 4eefb2d32c101854ba84b5a9825c0247, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2450,6 +2480,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5229256610025672906}
+  - {fileID: 732309236}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2465,6 +2496,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93566d472141b5499dc49e1fc12c3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillToTest:
+  - {fileID: 320077762649197316, guid: 4beaa37f3bc610049806bd4b62a49971, type: 3}
+  - {fileID: 1056609951441697880, guid: 1137cd0a760d9a446944a185c98fc308, type: 3}
+  skillPoint: {fileID: 732309236}
 --- !u!1 &8426967885047246017
 GameObject:
   m_ObjectHideFlags: 0

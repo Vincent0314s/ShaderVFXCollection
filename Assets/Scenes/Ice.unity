@@ -200,8 +200,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 329740336}
-  m_LocalRotation: {x: -0.20099254, y: 0.5413653, z: -0.1349096, w: -0.80518633}
-  m_LocalPosition: {x: 5.2575464, y: 4.553835, z: 0.61292267}
+  m_LocalRotation: {x: -0.23162639, y: 0.39524183, z: -0.103495546, w: -0.8828486}
+  m_LocalPosition: {x: 8.910297, y: 9.453127, z: -2.8217926}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -431,36 +431,6 @@ Transform:
   m_Father: {fileID: 1007562104}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &732309235
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 732309236}
-  m_Layer: 0
-  m_Name: SkillPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &732309236
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732309235}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 959541399521834195}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &856399674
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,7 +548,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007562103}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.379, y: 1.248, z: 0}
+  m_LocalPosition: {x: -1.379, y: 1.248, z: -6.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1959773644}
@@ -681,11 +651,6 @@ Transform:
   m_Father: {fileID: 1007562104}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &959541399521834195 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4776152628628325197, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-  m_PrefabInstance: {fileID: 5699503597544748958}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5699503597544748958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -738,21 +703,37 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5604968849687867550, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-      propertyPath: skillPoint
-      value: 
-      objectReference: {fileID: 732309236}
+      propertyPath: skillToTest.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5604968849687867550, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-      propertyPath: skillToTest
+      propertyPath: skillToTest.Array.data[0].PF_Skill
       value: 
       objectReference: {fileID: 320077762649197316, guid: 4beaa37f3bc610049806bd4b62a49971, type: 3}
-    - target: {fileID: 6465211040983034483, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+    - target: {fileID: 5604968849687867550, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
+      propertyPath: skillToTest.Array.data[1].PF_Skill
       value: 
-      objectReference: {fileID: 2100000, guid: 620fe5325a5c1364cb213a707a214112, type: 2}
-    - target: {fileID: 6465211040983034483, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      objectReference: {fileID: 1056609951441697880, guid: 1137cd0a760d9a446944a185c98fc308, type: 3}
+    - target: {fileID: 5604968849687867550, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
+      propertyPath: skillToTest.Array.data[2].PF_Skill
       value: 
-      objectReference: {fileID: 2100000, guid: 4eefb2d32c101854ba84b5a9825c0247, type: 2}
+      objectReference: {fileID: 1236226495, guid: e70330cf1c09dcd46a8fd721b227f3a1, type: 3}
+    - target: {fileID: 5604968849687867550, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
+      propertyPath: skillToTest.Array.data[0].cancelTrigger
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5604968849687867550, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
+      propertyPath: skillToTest.Array.data[1].cancelTrigger
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5604968849687867550, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
+      propertyPath: skillToTest.Array.data[2].cancelTrigger
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6465211040983034483, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 55
+      objectReference: {fileID: 0}
     - target: {fileID: 8223296403244428758, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
       propertyPath: m_Name
       value: SkillTester
