@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 08013958d9265d240ae4e2ab133652d5, type: 2}
     - target: {fileID: 3727079978168915969, guid: 00e42198f491f4c4d887b1c30cd989f6, type: 3}
       propertyPath: m_Name
-      value: Missile_Blue
+      value: Missile_Blue Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3727079978168915972, guid: 00e42198f491f4c4d887b1c30cd989f6, type: 3}
       propertyPath: target
@@ -101,7 +101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3727079978168915972, guid: 00e42198f491f4c4d887b1c30cd989f6, type: 3}
       propertyPath: moveSpeed
-      value: 25
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3727079978168915972, guid: 00e42198f491f4c4d887b1c30cd989f6, type: 3}
       propertyPath: turnSpeed
