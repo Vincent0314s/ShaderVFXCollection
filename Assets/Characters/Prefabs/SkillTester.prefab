@@ -1848,7 +1848,62 @@ SkinnedMeshRenderer:
   - {fileID: 3981885989402951977}
   - {fileID: 3536663457789495032}
   - {fileID: 2646522339262310698}
-  m_BlendShapeWeights: []
+  m_BlendShapeWeights:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   m_RootBone: {fileID: 1435548687820037736}
   m_AABB:
     m_Center: {x: 0.045370996, y: -0.16174555, z: -0.15695563}
@@ -2463,7 +2518,7 @@ GameObject:
   - component: {fileID: 5604968849687867550}
   m_Layer: 0
   m_Name: SkillTester
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2497,8 +2552,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillToTest:
-  - {fileID: 320077762649197316, guid: 4beaa37f3bc610049806bd4b62a49971, type: 3}
-  - {fileID: 1056609951441697880, guid: 1137cd0a760d9a446944a185c98fc308, type: 3}
+  - PF_Skill: {fileID: 320077762649197316, guid: 4beaa37f3bc610049806bd4b62a49971, type: 3}
+    cancelTrigger: 3
+  - PF_Skill: {fileID: 1056609951441697880, guid: 1137cd0a760d9a446944a185c98fc308, type: 3}
+    cancelTrigger: 2
+  - PF_Skill: {fileID: 1236226495, guid: e70330cf1c09dcd46a8fd721b227f3a1, type: 3}
+    cancelTrigger: 2
   skillPoint: {fileID: 732309236}
 --- !u!1 &8426967885047246017
 GameObject:

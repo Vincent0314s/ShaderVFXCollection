@@ -302,6 +302,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 228373874306198868, guid: 69a84b0ccf1a9bf4eb2aae9cec137736, type: 3}
   m_PrefabInstance: {fileID: 294817972}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &619026121
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7425694036207428576, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_Name
+      value: VFX_FireSector
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.030396648
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.4605861
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.40455526
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7425694036207428577, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
 --- !u!1 &861051907
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,6 +820,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2584182242271285614, guid: e70330cf1c09dcd46a8fd721b227f3a1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2584182242723526390, guid: e70330cf1c09dcd46a8fd721b227f3a1, type: 3}
       propertyPath: m_Name
       value: VFX_FireExplosion

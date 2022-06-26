@@ -25,6 +25,6 @@ Material:
     - _VoronoiScale: 2.5
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FirstColor: {r: 2.9960785, g: 1.2392157, b: 0.5803922, a: 1}
+    - _FirstColor: {r: 4, g: 1.9828475, b: 1.2264152, a: 1}
     - _SecondColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
   m_BuildTextureStacks: []

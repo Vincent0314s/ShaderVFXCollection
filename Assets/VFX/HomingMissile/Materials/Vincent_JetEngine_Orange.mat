@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Vincent_JetEngine
+  m_Name: Vincent_JetEngine_Orange
   m_Shader: {fileID: 4800000, guid: 44249c78e6e22b44fbf1114e976391cd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -40,6 +40,6 @@ Material:
     m_Colors:
     - _Color0: {r: 0.6784314, g: 0.1829546, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _HeadColor: {r: 0.036863927, g: 2.5426877, b: 3.5204983, a: 1}
-    - _TailColor: {r: 0, g: 1.015499, b: 3.6078432, a: 1}
+    - _HeadColor: {r: 3.5204983, g: 1.7910367, b: 0.055295683, a: 1}
+    - _TailColor: {r: 3.6078432, g: 0.8304088, b: 0, a: 1}
   m_BuildTextureStacks: []

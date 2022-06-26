@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Vincent_JetEngine
+  m_Name: Vincent_JetEngine_Blue
   m_Shader: {fileID: 4800000, guid: 44249c78e6e22b44fbf1114e976391cd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
