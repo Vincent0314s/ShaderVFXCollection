@@ -33,7 +33,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _Dissolve: 0
+    - _Dissolve: 0.179
     - _EdgeWidth: 0.017
     m_Colors:
     - _EdgeColor: {r: 0, g: 0.7005146, b: 1, a: 1}
