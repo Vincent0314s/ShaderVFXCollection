@@ -24308,6 +24308,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.01, z: 0.0774044}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4972769105699739121}
   - {fileID: 6877434031332337734}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -24328,6 +24329,22 @@ MonoBehaviour:
   OnStart:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 9220573914579917988}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  firstTimer: 0.35
+  OnSecondEffect:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 6877434031332337733}
         m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
         m_MethodName: Play
@@ -24340,10 +24357,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  firstTimer: 0
-  OnSecondEffect:
-    m_PersistentCalls:
-      m_Calls: []
   secondTimer: 0
   OnStop:
     m_PersistentCalls:
@@ -24382,9 +24395,8 @@ Transform:
   - {fileID: 7873965728566192826}
   - {fileID: 2764225699660630224}
   - {fileID: 427621148}
-  - {fileID: 4972769105699739121}
   m_Father: {fileID: 6877434030842475032}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &6877434031332337733
 ParticleSystem:
@@ -34143,8 +34155,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6877434031332337734}
-  m_RootOrder: 5
+  m_Father: {fileID: 6877434030842475032}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &9220573914579917988
 ParticleSystem:
@@ -35518,7 +35530,7 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 6746
+        atime0: 0
         atime1: 14264
         atime2: 59753
         atime3: 65535

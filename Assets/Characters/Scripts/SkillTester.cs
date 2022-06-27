@@ -5,14 +5,12 @@ using UnityEngine;
 
 [System.Serializable]
 public struct SkillContainer{
-    public enum TriggerAnimation{
-        None,
-        Beginning,
-        First,
-        Second
-    }
     public VFX_BaseSkill PF_Skill;
-    public TriggerAnimation cancelTrigger;    
+    public float secToPlayEffect;
+    public string animatoinToPlay;
+    public float secToStartAnimation;
+    public float secToStopAnimation;
+    public float vfxDistanceToSpawn;
 }
 
 public class SkillTester : MonoBehaviour
@@ -36,7 +34,7 @@ public class SkillTester : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space)){
-           CreateSkillVFX();
+           ActivateSkill();
         }
         if(Input.GetKeyDown(KeyCode.Q) && skillIndex > 0){
             skillIndex -= 1;
@@ -44,22 +42,24 @@ public class SkillTester : MonoBehaviour
          if(Input.GetKeyDown(KeyCode.E) && skillIndex < skillToTest.Length - 1){
             skillIndex += 1;
         }
-        anim.SetInteger("SkillIndex",skillIndex);
+
         anim.SetBool("isCasting",isCastingSkill);
     }
     
-    void CreateSkillVFX(){
+    void ActivateSkill(){
         isCastingSkill = true;
+        Vector3 vfxPos = (transform.forward * skillToTest[skillIndex].vfxDistanceToSpawn) + new Vector3(0,0.1f,0);
+        VFX_BaseSkill currentVFX = Instantiate(skillToTest[skillIndex].PF_Skill,vfxPos,transform.rotation);
+        StartCoroutine(ActivateSkillCoroutine(currentVFX));
+    }
 
-        VFX_BaseSkill currentVFX = Instantiate(skillToTest[skillIndex].PF_Skill,skillPoint.position,Quaternion.identity);
-        switch (skillToTest[skillIndex].cancelTrigger)
-        {
-            case SkillContainer.TriggerAnimation.First:
-            currentVFX.LaunchSkill(() => isCastingSkill = false);
-            break;
-            case SkillContainer.TriggerAnimation.Second:
-            currentVFX.LaunchSkill(null,() => isCastingSkill = false);
-            break;
-        }
+    IEnumerator ActivateSkillCoroutine(VFX_BaseSkill _currentVFX){
+        SkillContainer currentSkill = skillToTest[skillIndex];
+        yield return new WaitForSeconds(currentSkill.secToStartAnimation);
+        anim.Play(currentSkill.animatoinToPlay,0,0);
+        yield return new WaitForSeconds(currentSkill.secToPlayEffect);
+        _currentVFX.LaunchSkill();
+        yield return new WaitForSeconds(currentSkill.secToStopAnimation);
+        isCastingSkill = false;
     }
 }

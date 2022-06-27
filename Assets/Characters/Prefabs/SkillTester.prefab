@@ -453,7 +453,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 70de8e57b274e3a47b73e7b6776d215d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2516,6 +2516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4776152628628325197}
   - component: {fileID: 5604968849687867550}
+  - component: {fileID: 447182549}
   m_Layer: 0
   m_Name: SkillTester
   m_TagString: Player
@@ -2553,12 +2554,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillToTest:
   - PF_Skill: {fileID: 320077762649197316, guid: 4beaa37f3bc610049806bd4b62a49971, type: 3}
-    cancelTrigger: 3
+    secToPlayEffect: 0
+    animatoinToPlay: root|Cast_Pose_Start_01
+    secToStartAnimation: 0
+    secToStopAnimation: 6.5
+    vfxDistanceToSpawn: 5
   - PF_Skill: {fileID: 1056609951441697880, guid: 1137cd0a760d9a446944a185c98fc308, type: 3}
-    cancelTrigger: 2
+    secToPlayEffect: 0
+    animatoinToPlay: root|Cast_Pose_Start_02
+    secToStartAnimation: 0
+    secToStopAnimation: 2.25
+    vfxDistanceToSpawn: 5
   - PF_Skill: {fileID: 1236226495, guid: e70330cf1c09dcd46a8fd721b227f3a1, type: 3}
-    cancelTrigger: 2
+    secToPlayEffect: 0
+    animatoinToPlay: root|Cast_Pose_Start_03
+    secToStartAnimation: 0
+    secToStopAnimation: 0.5
+    vfxDistanceToSpawn: 5
+  - PF_Skill: {fileID: 2127028018893105750, guid: 2f5dc8c9789804d439a0f8b1be0d3b5d, type: 3}
+    secToPlayEffect: 0
+    animatoinToPlay: root|Cast_Pose_Start_03
+    secToStartAnimation: 0
+    secToStopAnimation: 0.35
+    vfxDistanceToSpawn: 1
+  - PF_Skill: {fileID: 74389451, guid: 64856cc6f26f095499983f0b4b3ae300, type: 3}
+    secToPlayEffect: 0
+    animatoinToPlay: root|Cast_Pose_Start_04
+    secToStartAnimation: 0
+    secToStopAnimation: 4.6
+    vfxDistanceToSpawn: 5
   skillPoint: {fileID: 732309236}
+--- !u!136 &447182549
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8223296403244428758}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 1.69
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.81, z: 0}
 --- !u!1 &8426967885047246017
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,20 +19,18 @@ public class VFX_BaseSkill : MonoBehaviour
     //     }
     // }
 
-    public void LaunchSkill(Action _firstCB,Action _sceondCB = null) {
-        StartCoroutine(LaunchSkillCoroutine(_firstCB,_sceondCB));
+    public void LaunchSkill() {
+        StartCoroutine(LaunchSkillCoroutine());
     }
 
-    IEnumerator LaunchSkillCoroutine(Action _firstCB = null,Action _secondCB = null) {
+    IEnumerator LaunchSkillCoroutine() {
         OnStart.Invoke();
         var _firstTimer = new WaitForSeconds(this.firstTimer);
         yield return _firstTimer;
-        _firstCB?.Invoke();
         OnSecondEffect.Invoke();
         var _secondTimer = new WaitForSeconds(this.secondTimer);
         yield return _secondTimer;
         OnStop.Invoke();
-        _secondCB?.Invoke();
-        Destroy(gameObject,5f);
+        Destroy(gameObject,10f);
     }
 }

@@ -144,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &341372529
 Transform:
   m_ObjectHideFlags: 0
@@ -180,25 +180,6 @@ MonoBehaviour:
   - {fileID: 7540044261746177439, guid: bc70d2794ae406940a555b7d2d785aab, type: 3}
   - {fileID: 3727079978168915972, guid: 00e42198f491f4c4d887b1c30cd989f6, type: 3}
   launchPoint: {fileID: 1461813472}
---- !u!1 &447182547 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8223296403244428758, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-  m_PrefabInstance: {fileID: 5699503597544748958}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &447182549
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 447182547}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 1.69
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.81, z: 0}
 --- !u!1 &629244702
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,10 +708,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 910972331087318182, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 70de8e57b274e3a47b73e7b6776d215d, type: 2}
     - target: {fileID: 4776152628628325197, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -775,17 +752,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6465211040983034483, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 620fe5325a5c1364cb213a707a214112, type: 2}
     - target: {fileID: 8223296403244428758, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
       propertyPath: m_Name
       value: SkillTester
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223296403244428758, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7295e404df210a944aef272d52b9c6ae, type: 3}
