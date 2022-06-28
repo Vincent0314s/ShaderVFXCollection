@@ -112,7 +112,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_0540a2e6c3ca41c0b42bdf3016fd15b7: 0.02
+    - Vector1_0540a2e6c3ca41c0b42bdf3016fd15b7: 0.2
     - Vector1_3e4443149c83402cb1eb3d379a0abad8: 0
     - _AlphaClip: 0
     - _AlphaCutoff: 0.5
@@ -125,7 +125,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Dissolve: 0
+    - _Dissolve: -0.00003783286
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0

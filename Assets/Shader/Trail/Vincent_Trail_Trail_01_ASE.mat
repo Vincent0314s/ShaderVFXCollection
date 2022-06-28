@@ -43,5 +43,5 @@ Material:
     - _NoiseTiling: {r: 0.2, g: 0.8, b: 0, a: 0}
     - _Speed: {r: -1, g: 0, b: 0, a: 0}
     - _TailColor: {r: 0, g: 1.0666667, b: 4, a: 1}
-    - _TextureSpeed: {r: -0.5, g: 0, b: 0, a: 0}
+    - _TextureSpeed: {r: 0.5, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

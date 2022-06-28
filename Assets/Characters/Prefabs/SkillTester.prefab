@@ -2552,6 +2552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93566d472141b5499dc49e1fc12c3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dissolveID: 778
   skillToTest:
   - PF_Skill: {fileID: 320077762649197316, guid: 4beaa37f3bc610049806bd4b62a49971, type: 3}
     secToPlayEffect: 0
@@ -2583,7 +2584,11 @@ MonoBehaviour:
     secToStartAnimation: 0
     secToStopAnimation: 4.6
     vfxDistanceToSpawn: 5
-  skillPoint: {fileID: 732309236}
+  skillName: {fileID: 0}
+  materials:
+  - {fileID: 2100000, guid: 620fe5325a5c1364cb213a707a214112, type: 2}
+  - {fileID: 2100000, guid: 4eefb2d32c101854ba84b5a9825c0247, type: 2}
+  - {fileID: 2100000, guid: 70de8e57b274e3a47b73e7b6776d215d, type: 2}
 --- !u!136 &447182549
 CapsuleCollider:
   m_ObjectHideFlags: 0

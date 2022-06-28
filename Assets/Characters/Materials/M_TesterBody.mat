@@ -113,7 +113,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - BOOLEAN_A1C15CA9A764432EB5B688D43C10FB9F: 0
-    - Vector1_0540a2e6c3ca41c0b42bdf3016fd15b7: 0.02
+    - Vector1_0540a2e6c3ca41c0b42bdf3016fd15b7: 0.2
     - Vector1_3e4443149c83402cb1eb3d379a0abad8: 0
     - _AlphaClip: 0
     - _AlphaCutoff: 0.5
@@ -126,7 +126,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Dissolve: 0
+    - _Dissolve: -0.00003783286
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -155,7 +155,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_9c6a1af5d6ea4c83bb40e4301281eb05: {r: 4, g: 1.70768, b: 0.62264156, a: 1}
+    - Color_9c6a1af5d6ea4c83bb40e4301281eb05: {r: 1.7207954, g: 0.7387708, b: 0.270282, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

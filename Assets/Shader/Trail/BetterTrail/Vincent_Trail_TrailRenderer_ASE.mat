@@ -26,7 +26,7 @@ Material:
     m_Floats:
     - _AlphaCutoff: 0.5
     - _Float0: 1
-    - _MoveToMaterialUV: 0
+    - _MoveToMaterialUV: 0.27712366
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainTex_STSSS: {r: 0.2, g: 1, b: 0, a: 0}
