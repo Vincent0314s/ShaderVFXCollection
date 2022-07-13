@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Vincent_VertexPractice_02_ASE
-  m_Shader: {fileID: 4800000, guid: 8f49af515482e7b42bb0031b20d2d5f1, type: 3}
+  m_Name: BlackWhiteFlash_ASE
+  m_Shader: {fileID: 4800000, guid: 9b45e5ba2c398474cbb1db246e08c4e4, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -21,16 +21,8 @@ Material:
     m_TexEnvs: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _Hardness: 15
-    - _MaskSmoothness: 0.1
-    - _Radius: 0
-    - _Rarius: 0.25
-    - _RotateScale: 5
-    - _sssaa: 1
+    - _Hardness: 0.5
+    - _Intensity: 0.3
     m_Colors:
-    - _CollapseWorldPoint: {r: 3, g: 4, b: 15, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Pivot: {r: 0, g: 0, b: 0, a: 0}
-    - _RotatorCenter: {r: 0.93, g: 0, b: -0.19, a: 0}
-    - _TargetPosition: {r: 0, g: 1.53, b: -0.54, a: 0}
   m_BuildTextureStacks: []
