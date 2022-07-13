@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Vincent_VertexPractice_01_ASE
+  m_Shader: {fileID: 4800000, guid: 2a2c9e51c56804c498a0e32f2fbb45dc, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - _AlphaClip: 0.94
+    - _AlphaCutoff: 0.5
+    - _Amount: 0.28
+    - _ClipThreshold: 0.5
+    - _ClipThreshold1: 0.5
+    - _Direction: -1
+    - _Direction1: -1
+    - _Float0: 0.394
+    - _Float1: -1
+    - _Singularity: 0
+    - _Singularity1: 0.316
+    m_Colors:
+    - _BaseColour: {r: 0.5566037, g: 0.5566037, b: 0.5566037, a: 0}
+    - _BaseColour1: {r: 0.5566037, g: 0.5566037, b: 0.5566037, a: 0}
+    - _CollapsePoint: {r: 1, g: 2.2, b: 1.6, a: 0}
+    - _CollapsePoint2: {r: 2, g: -2.2, b: 1.6, a: 0}
+    - _CollapseWorldPoint: {r: 0, g: 0, b: 0, a: 0}
+    - _Color0: {r: 0.28773576, g: 0.89617383, b: 1, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Glow: {r: 0, g: 1.490196, b: 2, a: 0}
+    - _Glow1: {r: 2, g: 1.6063874, b: 0, a: 0}
+    - _NoiseTile: {r: 2, g: 0.2, b: 0, a: 0}
+    - _NoiseTile1: {r: 2, g: 0.2, b: 0, a: 0}
+    - _Vector0: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
