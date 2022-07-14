@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BlackWhiteFlash_02_ASE
+  m_Shader: {fileID: 4800000, guid: 2b0c3134c55c8ac4c99a3575cf52a4dc, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _NoiseTexture_A:
+        m_Texture: {fileID: 2800000, guid: 4906295d398558a489618dd52730844d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture_B:
+        m_Texture: {fileID: 2800000, guid: 9e6a5597f88ee704a86c78a526e63eca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _BWRange: 0.152
+    - _BWTransition: 0.05
+    - _FlipColor: 0
+    - _NoiseStrength_A: 0.35
+    m_Colors:
+    - _Color_A: {r: 0, g: 0, b: 0, a: 1}
+    - _Color_B: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LineCenter: {r: 0.39, g: 0.33, b: 0, a: 0}
+    - _LineStretch: {r: 0.5, g: 30, b: 0, a: 0}
+    - _LineStretch_A: {r: 0.5, g: 25, b: 0, a: 0}
+    - _LineStretch_B: {r: 0.25, g: 35, b: 0, a: 0}
+    - _NoiseSpeed_A: {r: 0.2, g: 0, b: 0, a: 0}
+    - _NoiseSpeed_B: {r: 0, g: 0.2, b: 0, a: 0}
+  m_BuildTextureStacks: []
