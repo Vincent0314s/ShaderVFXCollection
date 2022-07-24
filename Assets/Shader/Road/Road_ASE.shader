@@ -11,6 +11,10 @@ Shader "Vincent/Road_ASE"
 		_RoadColor("Road Color", Color) = (0.2641509,0.2641509,0.2641509,1)
 		_Metallic("Metallic", Range( 0 , 1)) = 0
 		_Smoothness("Smoothness", Range( 0 , 1)) = 0
+		[Header(Edge Line)]_EdgeLineColor("Edge Line Color", Color) = (1,1,1,1)
+		[Toggle(_SHOWEDGE_ON)] _ShowEdge("Show Edge", Float) = 0
+		_EdgeLineWidth("Edge Line Width", Range( 0.1 , 0.3)) = 0.01
+		_EdgeRoadOffset("Edge Road Offset", Range( 0.3 , 0.5)) = 0.4
 		[Header(Outer Line)]_OuterLineColor("Outer Line Color", Color) = (1,1,1,1)
 		_OuterLineWidth("Outer Line Width", Range( 0.01 , 0.3)) = 0.01
 		_OuterRoadOffset("Outer Road Offset", Range( 0.1 , 0.5)) = 0.4
@@ -217,7 +221,8 @@ Shader "Vincent/Road_ASE"
 			    #define ENABLE_TERRAIN_PERPIXEL_NORMAL
 			#endif
 
-			
+			#pragma shader_feature_local _SHOWEDGE_ON
+
 
 			struct VertexInput
 			{
@@ -252,19 +257,22 @@ Shader "Vincent/Road_ASE"
 			CBUFFER_START(UnityPerMaterial)
 			float4 _RoadTex_ST;
 			float4 _RoadColor;
+			float4 _RoadNormal_ST;
+			float4 _EdgeLineColor;
 			float4 _OuterLineColor;
 			float4 _InnerLineColor;
 			float4 _DashLineColor;
-			float4 _RoadNormal_ST;
-			float _OuterRoadOffset;
-			float _OuterLineWidth;
-			float _InnerRoadOffset;
-			float _InnerLineWidth;
-			float _DashLineOffset;
-			float _DashLineCount;
-			float _DashLineWidth;
+			float _EdgeLineWidth;
+			float _EdgeRoadOffset;
 			float _DashSegmentLength;
+			float _DashLineCount;
 			float _Metallic;
+			float _DashLineOffset;
+			float _InnerLineWidth;
+			float _InnerRoadOffset;
+			float _OuterLineWidth;
+			float _OuterRoadOffset;
+			float _DashLineWidth;
 			float _Smoothness;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
@@ -490,58 +498,73 @@ Shader "Vincent/Road_ASE"
 				float2 uv_RoadTex = IN.ase_texcoord7.xy * _RoadTex_ST.xy + _RoadTex_ST.zw;
 				float2 temp_output_20_0 = ( _OuterRoadOffset * float2( 1,0 ) );
 				float2 texCoord9 = IN.ase_texcoord7.xy * float2( 1,1 ) + temp_output_20_0;
-				float2 appendResult10_g6 = (float2(_OuterLineWidth , 1.0));
-				float2 temp_output_11_0_g6 = ( abs( (texCoord9*2.0 + -1.0) ) - appendResult10_g6 );
-				float2 break16_g6 = ( 1.0 - ( temp_output_11_0_g6 / fwidth( temp_output_11_0_g6 ) ) );
+				float2 appendResult10_g18 = (float2(_OuterLineWidth , 1.0));
+				float2 temp_output_11_0_g18 = ( abs( (texCoord9*2.0 + -1.0) ) - appendResult10_g18 );
+				float2 break16_g18 = ( 1.0 - ( temp_output_11_0_g18 / fwidth( temp_output_11_0_g18 ) ) );
 				float2 texCoord11 = IN.ase_texcoord7.xy * float2( 1,1 ) + -temp_output_20_0;
-				float2 appendResult10_g5 = (float2(_OuterLineWidth , 1.0));
-				float2 temp_output_11_0_g5 = ( abs( (texCoord11*2.0 + -1.0) ) - appendResult10_g5 );
-				float2 break16_g5 = ( 1.0 - ( temp_output_11_0_g5 / fwidth( temp_output_11_0_g5 ) ) );
-				float4 _OuterLine26 = ( ( saturate( min( break16_g6.x , break16_g6.y ) ) + saturate( min( break16_g5.x , break16_g5.y ) ) ) * _OuterLineColor );
+				float2 appendResult10_g19 = (float2(_OuterLineWidth , 1.0));
+				float2 temp_output_11_0_g19 = ( abs( (texCoord11*2.0 + -1.0) ) - appendResult10_g19 );
+				float2 break16_g19 = ( 1.0 - ( temp_output_11_0_g19 / fwidth( temp_output_11_0_g19 ) ) );
+				float4 _OuterLine26 = ( ( saturate( min( break16_g18.x , break16_g18.y ) ) + saturate( min( break16_g19.x , break16_g19.y ) ) ) * _OuterLineColor );
 				float2 temp_output_32_0 = ( _InnerRoadOffset * float2( 1,0 ) );
 				float2 texCoord34 = IN.ase_texcoord7.xy * float2( 1,1 ) + temp_output_32_0;
-				float2 appendResult10_g4 = (float2(_InnerLineWidth , 1.0));
-				float2 temp_output_11_0_g4 = ( abs( (texCoord34*2.0 + -1.0) ) - appendResult10_g4 );
-				float2 break16_g4 = ( 1.0 - ( temp_output_11_0_g4 / fwidth( temp_output_11_0_g4 ) ) );
+				float2 appendResult10_g17 = (float2(_InnerLineWidth , 1.0));
+				float2 temp_output_11_0_g17 = ( abs( (texCoord34*2.0 + -1.0) ) - appendResult10_g17 );
+				float2 break16_g17 = ( 1.0 - ( temp_output_11_0_g17 / fwidth( temp_output_11_0_g17 ) ) );
 				float2 texCoord35 = IN.ase_texcoord7.xy * float2( 1,1 ) + -temp_output_32_0;
-				float2 appendResult10_g3 = (float2(_InnerLineWidth , 1.0));
-				float2 temp_output_11_0_g3 = ( abs( (texCoord35*2.0 + -1.0) ) - appendResult10_g3 );
-				float2 break16_g3 = ( 1.0 - ( temp_output_11_0_g3 / fwidth( temp_output_11_0_g3 ) ) );
-				float4 _InnerLine42 = ( ( saturate( min( break16_g4.x , break16_g4.y ) ) + saturate( min( break16_g3.x , break16_g3.y ) ) ) * _InnerLineColor );
+				float2 appendResult10_g16 = (float2(_InnerLineWidth , 1.0));
+				float2 temp_output_11_0_g16 = ( abs( (texCoord35*2.0 + -1.0) ) - appendResult10_g16 );
+				float2 break16_g16 = ( 1.0 - ( temp_output_11_0_g16 / fwidth( temp_output_11_0_g16 ) ) );
+				float4 _InnerLine42 = ( ( saturate( min( break16_g17.x , break16_g17.y ) ) + saturate( min( break16_g16.x , break16_g16.y ) ) ) * _InnerLineColor );
 				float2 appendResult79 = (float2(_DashLineOffset , _DashLineCount));
 				float2 texCoord60 = IN.ase_texcoord7.xy * appendResult79 + float2( 0,0 );
-				float2 appendResult10_g9 = (float2(_DashLineWidth , _DashSegmentLength));
-				float2 temp_output_11_0_g9 = ( abs( (frac( texCoord60 )*2.0 + -1.0) ) - appendResult10_g9 );
-				float2 break16_g9 = ( 1.0 - ( temp_output_11_0_g9 / fwidth( temp_output_11_0_g9 ) ) );
+				float2 appendResult10_g15 = (float2(_DashLineWidth , _DashSegmentLength));
+				float2 temp_output_11_0_g15 = ( abs( (frac( texCoord60 )*2.0 + -1.0) ) - appendResult10_g15 );
+				float2 break16_g15 = ( 1.0 - ( temp_output_11_0_g15 / fwidth( temp_output_11_0_g15 ) ) );
 				float2 texCoord75 = IN.ase_texcoord7.xy * float2( 1,1 ) + float2( 0.25,0 );
-				float2 appendResult10_g7 = (float2(0.5 , 1.0));
-				float2 temp_output_11_0_g7 = ( abs( (texCoord75*2.0 + -1.0) ) - appendResult10_g7 );
-				float2 break16_g7 = ( 1.0 - ( temp_output_11_0_g7 / fwidth( temp_output_11_0_g7 ) ) );
-				float temp_output_74_0 = saturate( min( break16_g7.x , break16_g7.y ) );
+				float2 appendResult10_g12 = (float2(0.5 , 1.0));
+				float2 temp_output_11_0_g12 = ( abs( (texCoord75*2.0 + -1.0) ) - appendResult10_g12 );
+				float2 break16_g12 = ( 1.0 - ( temp_output_11_0_g12 / fwidth( temp_output_11_0_g12 ) ) );
+				float temp_output_74_0 = saturate( min( break16_g12.x , break16_g12.y ) );
 				float2 appendResult82 = (float2(_DashLineOffset , _DashLineCount));
 				float2 texCoord57 = IN.ase_texcoord7.xy * appendResult82 + float2( 0,0 );
 				float cos95 = cos( radians( 180.0 ) );
 				float sin95 = sin( radians( 180.0 ) );
 				float2 rotator95 = mul( texCoord57 - float2( 0.5,0.5 ) , float2x2( cos95 , -sin95 , sin95 , cos95 )) + float2( 0.5,0.5 );
-				float2 appendResult10_g8 = (float2(_DashLineWidth , _DashSegmentLength));
-				float2 temp_output_11_0_g8 = ( abs( (frac( rotator95 )*2.0 + -1.0) ) - appendResult10_g8 );
-				float2 break16_g8 = ( 1.0 - ( temp_output_11_0_g8 / fwidth( temp_output_11_0_g8 ) ) );
+				float2 appendResult10_g14 = (float2(_DashLineWidth , _DashSegmentLength));
+				float2 temp_output_11_0_g14 = ( abs( (frac( rotator95 )*2.0 + -1.0) ) - appendResult10_g14 );
+				float2 break16_g14 = ( 1.0 - ( temp_output_11_0_g14 / fwidth( temp_output_11_0_g14 ) ) );
 				float _OuterRoadOffset106 = _OuterRoadOffset;
 				float _OuterLineWidth110 = _OuterLineWidth;
-				float2 appendResult10_g10 = (float2(( ( _OuterRoadOffset106 * 2.0 ) - _OuterLineWidth110 ) , 1.0));
-				float2 temp_output_11_0_g10 = ( abs( (IN.ase_texcoord7.xy*2.0 + -1.0) ) - appendResult10_g10 );
-				float2 break16_g10 = ( 1.0 - ( temp_output_11_0_g10 / fwidth( temp_output_11_0_g10 ) ) );
+				float2 appendResult10_g13 = (float2(( ( _OuterRoadOffset106 * 2.0 ) - _OuterLineWidth110 ) , 1.0));
+				float2 temp_output_11_0_g13 = ( abs( (IN.ase_texcoord7.xy*2.0 + -1.0) ) - appendResult10_g13 );
+				float2 break16_g13 = ( 1.0 - ( temp_output_11_0_g13 / fwidth( temp_output_11_0_g13 ) ) );
 				float _InnerRoadOffset107 = _InnerRoadOffset;
 				float _InnerLineWidth115 = _InnerLineWidth;
 				float2 appendResult10_g11 = (float2(( ( _InnerRoadOffset107 * 2.0 ) + _InnerLineWidth115 ) , 1.0));
 				float2 temp_output_11_0_g11 = ( abs( (IN.ase_texcoord7.xy*2.0 + -1.0) ) - appendResult10_g11 );
 				float2 break16_g11 = ( 1.0 - ( temp_output_11_0_g11 / fwidth( temp_output_11_0_g11 ) ) );
-				float _DashLineMask119 = ( saturate( min( break16_g10.x , break16_g10.y ) ) * ( 1.0 - saturate( min( break16_g11.x , break16_g11.y ) ) ) );
-				float4 _DashLine53 = ( ( ( ( saturate( min( break16_g9.x , break16_g9.y ) ) * temp_output_74_0 ) + ( saturate( min( break16_g8.x , break16_g8.y ) ) * ( 1.0 - temp_output_74_0 ) ) ) * _DashLineColor ) * _DashLineMask119 );
+				float _DashLineMask119 = ( saturate( min( break16_g13.x , break16_g13.y ) ) * ( 1.0 - saturate( min( break16_g11.x , break16_g11.y ) ) ) );
+				float4 _DashLine53 = ( ( ( ( saturate( min( break16_g15.x , break16_g15.y ) ) * temp_output_74_0 ) + ( saturate( min( break16_g14.x , break16_g14.y ) ) * ( 1.0 - temp_output_74_0 ) ) ) * _DashLineColor ) * _DashLineMask119 );
+				float2 temp_output_133_0 = ( _EdgeRoadOffset * float2( 1,0 ) );
+				float2 texCoord135 = IN.ase_texcoord7.xy * float2( 1,1 ) + temp_output_133_0;
+				float2 appendResult10_g20 = (float2(_EdgeLineWidth , 1.0));
+				float2 temp_output_11_0_g20 = ( abs( (texCoord135*2.0 + -1.0) ) - appendResult10_g20 );
+				float2 break16_g20 = ( 1.0 - ( temp_output_11_0_g20 / fwidth( temp_output_11_0_g20 ) ) );
+				float2 texCoord136 = IN.ase_texcoord7.xy * float2( 1,1 ) + -temp_output_133_0;
+				float2 appendResult10_g21 = (float2(_EdgeLineWidth , 1.0));
+				float2 temp_output_11_0_g21 = ( abs( (texCoord136*2.0 + -1.0) ) - appendResult10_g21 );
+				float2 break16_g21 = ( 1.0 - ( temp_output_11_0_g21 / fwidth( temp_output_11_0_g21 ) ) );
+				float4 _EdgeLine142 = ( ( saturate( min( break16_g20.x , break16_g20.y ) ) + saturate( min( break16_g21.x , break16_g21.y ) ) ) * _EdgeLineColor );
+				#ifdef _SHOWEDGE_ON
+				float4 staticSwitch144 = _EdgeLine142;
+				#else
+				float4 staticSwitch144 = float4( 0,0,0,0 );
+				#endif
 				
 				float2 uv_RoadNormal = IN.ase_texcoord7.xy * _RoadNormal_ST.xy + _RoadNormal_ST.zw;
 				
-				float3 Albedo = ( ( tex2D( _RoadTex, uv_RoadTex ) * _RoadColor ) + ( ( _OuterLine26 + _InnerLine42 ) + _DashLine53 ) ).rgb;
+				float3 Albedo = ( ( tex2D( _RoadTex, uv_RoadTex ) * _RoadColor ) + ( _OuterLine26 + _InnerLine42 + _DashLine53 + staticSwitch144 ) ).rgb;
 				float3 Normal = UnpackNormalScale( tex2D( _RoadNormal, uv_RoadNormal ), 1.0f );
 				float3 Emission = 0;
 				float3 Specular = 0.5;
@@ -764,19 +787,22 @@ Shader "Vincent/Road_ASE"
 			CBUFFER_START(UnityPerMaterial)
 			float4 _RoadTex_ST;
 			float4 _RoadColor;
+			float4 _RoadNormal_ST;
+			float4 _EdgeLineColor;
 			float4 _OuterLineColor;
 			float4 _InnerLineColor;
 			float4 _DashLineColor;
-			float4 _RoadNormal_ST;
-			float _OuterRoadOffset;
-			float _OuterLineWidth;
-			float _InnerRoadOffset;
-			float _InnerLineWidth;
-			float _DashLineOffset;
-			float _DashLineCount;
-			float _DashLineWidth;
+			float _EdgeLineWidth;
+			float _EdgeRoadOffset;
 			float _DashSegmentLength;
+			float _DashLineCount;
 			float _Metallic;
+			float _DashLineOffset;
+			float _InnerLineWidth;
+			float _InnerRoadOffset;
+			float _OuterLineWidth;
+			float _OuterRoadOffset;
+			float _DashLineWidth;
 			float _Smoothness;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
@@ -1058,19 +1084,22 @@ Shader "Vincent/Road_ASE"
 			CBUFFER_START(UnityPerMaterial)
 			float4 _RoadTex_ST;
 			float4 _RoadColor;
+			float4 _RoadNormal_ST;
+			float4 _EdgeLineColor;
 			float4 _OuterLineColor;
 			float4 _InnerLineColor;
 			float4 _DashLineColor;
-			float4 _RoadNormal_ST;
-			float _OuterRoadOffset;
-			float _OuterLineWidth;
-			float _InnerRoadOffset;
-			float _InnerLineWidth;
-			float _DashLineOffset;
-			float _DashLineCount;
-			float _DashLineWidth;
+			float _EdgeLineWidth;
+			float _EdgeRoadOffset;
 			float _DashSegmentLength;
+			float _DashLineCount;
 			float _Metallic;
+			float _DashLineOffset;
+			float _InnerLineWidth;
+			float _InnerRoadOffset;
+			float _OuterLineWidth;
+			float _OuterRoadOffset;
+			float _DashLineWidth;
 			float _Smoothness;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
@@ -1292,7 +1321,8 @@ Shader "Vincent/Road_ASE"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 
-			
+			#pragma shader_feature_local _SHOWEDGE_ON
+
 
 			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
@@ -1323,19 +1353,22 @@ Shader "Vincent/Road_ASE"
 			CBUFFER_START(UnityPerMaterial)
 			float4 _RoadTex_ST;
 			float4 _RoadColor;
+			float4 _RoadNormal_ST;
+			float4 _EdgeLineColor;
 			float4 _OuterLineColor;
 			float4 _InnerLineColor;
 			float4 _DashLineColor;
-			float4 _RoadNormal_ST;
-			float _OuterRoadOffset;
-			float _OuterLineWidth;
-			float _InnerRoadOffset;
-			float _InnerLineWidth;
-			float _DashLineOffset;
-			float _DashLineCount;
-			float _DashLineWidth;
+			float _EdgeLineWidth;
+			float _EdgeRoadOffset;
 			float _DashSegmentLength;
+			float _DashLineCount;
 			float _Metallic;
+			float _DashLineOffset;
+			float _InnerLineWidth;
+			float _InnerRoadOffset;
+			float _OuterLineWidth;
+			float _OuterRoadOffset;
+			float _DashLineWidth;
 			float _Smoothness;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
@@ -1509,57 +1542,72 @@ Shader "Vincent/Road_ASE"
 				float2 uv_RoadTex = IN.ase_texcoord2.xy * _RoadTex_ST.xy + _RoadTex_ST.zw;
 				float2 temp_output_20_0 = ( _OuterRoadOffset * float2( 1,0 ) );
 				float2 texCoord9 = IN.ase_texcoord2.xy * float2( 1,1 ) + temp_output_20_0;
-				float2 appendResult10_g6 = (float2(_OuterLineWidth , 1.0));
-				float2 temp_output_11_0_g6 = ( abs( (texCoord9*2.0 + -1.0) ) - appendResult10_g6 );
-				float2 break16_g6 = ( 1.0 - ( temp_output_11_0_g6 / fwidth( temp_output_11_0_g6 ) ) );
+				float2 appendResult10_g18 = (float2(_OuterLineWidth , 1.0));
+				float2 temp_output_11_0_g18 = ( abs( (texCoord9*2.0 + -1.0) ) - appendResult10_g18 );
+				float2 break16_g18 = ( 1.0 - ( temp_output_11_0_g18 / fwidth( temp_output_11_0_g18 ) ) );
 				float2 texCoord11 = IN.ase_texcoord2.xy * float2( 1,1 ) + -temp_output_20_0;
-				float2 appendResult10_g5 = (float2(_OuterLineWidth , 1.0));
-				float2 temp_output_11_0_g5 = ( abs( (texCoord11*2.0 + -1.0) ) - appendResult10_g5 );
-				float2 break16_g5 = ( 1.0 - ( temp_output_11_0_g5 / fwidth( temp_output_11_0_g5 ) ) );
-				float4 _OuterLine26 = ( ( saturate( min( break16_g6.x , break16_g6.y ) ) + saturate( min( break16_g5.x , break16_g5.y ) ) ) * _OuterLineColor );
+				float2 appendResult10_g19 = (float2(_OuterLineWidth , 1.0));
+				float2 temp_output_11_0_g19 = ( abs( (texCoord11*2.0 + -1.0) ) - appendResult10_g19 );
+				float2 break16_g19 = ( 1.0 - ( temp_output_11_0_g19 / fwidth( temp_output_11_0_g19 ) ) );
+				float4 _OuterLine26 = ( ( saturate( min( break16_g18.x , break16_g18.y ) ) + saturate( min( break16_g19.x , break16_g19.y ) ) ) * _OuterLineColor );
 				float2 temp_output_32_0 = ( _InnerRoadOffset * float2( 1,0 ) );
 				float2 texCoord34 = IN.ase_texcoord2.xy * float2( 1,1 ) + temp_output_32_0;
-				float2 appendResult10_g4 = (float2(_InnerLineWidth , 1.0));
-				float2 temp_output_11_0_g4 = ( abs( (texCoord34*2.0 + -1.0) ) - appendResult10_g4 );
-				float2 break16_g4 = ( 1.0 - ( temp_output_11_0_g4 / fwidth( temp_output_11_0_g4 ) ) );
+				float2 appendResult10_g17 = (float2(_InnerLineWidth , 1.0));
+				float2 temp_output_11_0_g17 = ( abs( (texCoord34*2.0 + -1.0) ) - appendResult10_g17 );
+				float2 break16_g17 = ( 1.0 - ( temp_output_11_0_g17 / fwidth( temp_output_11_0_g17 ) ) );
 				float2 texCoord35 = IN.ase_texcoord2.xy * float2( 1,1 ) + -temp_output_32_0;
-				float2 appendResult10_g3 = (float2(_InnerLineWidth , 1.0));
-				float2 temp_output_11_0_g3 = ( abs( (texCoord35*2.0 + -1.0) ) - appendResult10_g3 );
-				float2 break16_g3 = ( 1.0 - ( temp_output_11_0_g3 / fwidth( temp_output_11_0_g3 ) ) );
-				float4 _InnerLine42 = ( ( saturate( min( break16_g4.x , break16_g4.y ) ) + saturate( min( break16_g3.x , break16_g3.y ) ) ) * _InnerLineColor );
+				float2 appendResult10_g16 = (float2(_InnerLineWidth , 1.0));
+				float2 temp_output_11_0_g16 = ( abs( (texCoord35*2.0 + -1.0) ) - appendResult10_g16 );
+				float2 break16_g16 = ( 1.0 - ( temp_output_11_0_g16 / fwidth( temp_output_11_0_g16 ) ) );
+				float4 _InnerLine42 = ( ( saturate( min( break16_g17.x , break16_g17.y ) ) + saturate( min( break16_g16.x , break16_g16.y ) ) ) * _InnerLineColor );
 				float2 appendResult79 = (float2(_DashLineOffset , _DashLineCount));
 				float2 texCoord60 = IN.ase_texcoord2.xy * appendResult79 + float2( 0,0 );
-				float2 appendResult10_g9 = (float2(_DashLineWidth , _DashSegmentLength));
-				float2 temp_output_11_0_g9 = ( abs( (frac( texCoord60 )*2.0 + -1.0) ) - appendResult10_g9 );
-				float2 break16_g9 = ( 1.0 - ( temp_output_11_0_g9 / fwidth( temp_output_11_0_g9 ) ) );
+				float2 appendResult10_g15 = (float2(_DashLineWidth , _DashSegmentLength));
+				float2 temp_output_11_0_g15 = ( abs( (frac( texCoord60 )*2.0 + -1.0) ) - appendResult10_g15 );
+				float2 break16_g15 = ( 1.0 - ( temp_output_11_0_g15 / fwidth( temp_output_11_0_g15 ) ) );
 				float2 texCoord75 = IN.ase_texcoord2.xy * float2( 1,1 ) + float2( 0.25,0 );
-				float2 appendResult10_g7 = (float2(0.5 , 1.0));
-				float2 temp_output_11_0_g7 = ( abs( (texCoord75*2.0 + -1.0) ) - appendResult10_g7 );
-				float2 break16_g7 = ( 1.0 - ( temp_output_11_0_g7 / fwidth( temp_output_11_0_g7 ) ) );
-				float temp_output_74_0 = saturate( min( break16_g7.x , break16_g7.y ) );
+				float2 appendResult10_g12 = (float2(0.5 , 1.0));
+				float2 temp_output_11_0_g12 = ( abs( (texCoord75*2.0 + -1.0) ) - appendResult10_g12 );
+				float2 break16_g12 = ( 1.0 - ( temp_output_11_0_g12 / fwidth( temp_output_11_0_g12 ) ) );
+				float temp_output_74_0 = saturate( min( break16_g12.x , break16_g12.y ) );
 				float2 appendResult82 = (float2(_DashLineOffset , _DashLineCount));
 				float2 texCoord57 = IN.ase_texcoord2.xy * appendResult82 + float2( 0,0 );
 				float cos95 = cos( radians( 180.0 ) );
 				float sin95 = sin( radians( 180.0 ) );
 				float2 rotator95 = mul( texCoord57 - float2( 0.5,0.5 ) , float2x2( cos95 , -sin95 , sin95 , cos95 )) + float2( 0.5,0.5 );
-				float2 appendResult10_g8 = (float2(_DashLineWidth , _DashSegmentLength));
-				float2 temp_output_11_0_g8 = ( abs( (frac( rotator95 )*2.0 + -1.0) ) - appendResult10_g8 );
-				float2 break16_g8 = ( 1.0 - ( temp_output_11_0_g8 / fwidth( temp_output_11_0_g8 ) ) );
+				float2 appendResult10_g14 = (float2(_DashLineWidth , _DashSegmentLength));
+				float2 temp_output_11_0_g14 = ( abs( (frac( rotator95 )*2.0 + -1.0) ) - appendResult10_g14 );
+				float2 break16_g14 = ( 1.0 - ( temp_output_11_0_g14 / fwidth( temp_output_11_0_g14 ) ) );
 				float _OuterRoadOffset106 = _OuterRoadOffset;
 				float _OuterLineWidth110 = _OuterLineWidth;
-				float2 appendResult10_g10 = (float2(( ( _OuterRoadOffset106 * 2.0 ) - _OuterLineWidth110 ) , 1.0));
-				float2 temp_output_11_0_g10 = ( abs( (IN.ase_texcoord2.xy*2.0 + -1.0) ) - appendResult10_g10 );
-				float2 break16_g10 = ( 1.0 - ( temp_output_11_0_g10 / fwidth( temp_output_11_0_g10 ) ) );
+				float2 appendResult10_g13 = (float2(( ( _OuterRoadOffset106 * 2.0 ) - _OuterLineWidth110 ) , 1.0));
+				float2 temp_output_11_0_g13 = ( abs( (IN.ase_texcoord2.xy*2.0 + -1.0) ) - appendResult10_g13 );
+				float2 break16_g13 = ( 1.0 - ( temp_output_11_0_g13 / fwidth( temp_output_11_0_g13 ) ) );
 				float _InnerRoadOffset107 = _InnerRoadOffset;
 				float _InnerLineWidth115 = _InnerLineWidth;
 				float2 appendResult10_g11 = (float2(( ( _InnerRoadOffset107 * 2.0 ) + _InnerLineWidth115 ) , 1.0));
 				float2 temp_output_11_0_g11 = ( abs( (IN.ase_texcoord2.xy*2.0 + -1.0) ) - appendResult10_g11 );
 				float2 break16_g11 = ( 1.0 - ( temp_output_11_0_g11 / fwidth( temp_output_11_0_g11 ) ) );
-				float _DashLineMask119 = ( saturate( min( break16_g10.x , break16_g10.y ) ) * ( 1.0 - saturate( min( break16_g11.x , break16_g11.y ) ) ) );
-				float4 _DashLine53 = ( ( ( ( saturate( min( break16_g9.x , break16_g9.y ) ) * temp_output_74_0 ) + ( saturate( min( break16_g8.x , break16_g8.y ) ) * ( 1.0 - temp_output_74_0 ) ) ) * _DashLineColor ) * _DashLineMask119 );
+				float _DashLineMask119 = ( saturate( min( break16_g13.x , break16_g13.y ) ) * ( 1.0 - saturate( min( break16_g11.x , break16_g11.y ) ) ) );
+				float4 _DashLine53 = ( ( ( ( saturate( min( break16_g15.x , break16_g15.y ) ) * temp_output_74_0 ) + ( saturate( min( break16_g14.x , break16_g14.y ) ) * ( 1.0 - temp_output_74_0 ) ) ) * _DashLineColor ) * _DashLineMask119 );
+				float2 temp_output_133_0 = ( _EdgeRoadOffset * float2( 1,0 ) );
+				float2 texCoord135 = IN.ase_texcoord2.xy * float2( 1,1 ) + temp_output_133_0;
+				float2 appendResult10_g20 = (float2(_EdgeLineWidth , 1.0));
+				float2 temp_output_11_0_g20 = ( abs( (texCoord135*2.0 + -1.0) ) - appendResult10_g20 );
+				float2 break16_g20 = ( 1.0 - ( temp_output_11_0_g20 / fwidth( temp_output_11_0_g20 ) ) );
+				float2 texCoord136 = IN.ase_texcoord2.xy * float2( 1,1 ) + -temp_output_133_0;
+				float2 appendResult10_g21 = (float2(_EdgeLineWidth , 1.0));
+				float2 temp_output_11_0_g21 = ( abs( (texCoord136*2.0 + -1.0) ) - appendResult10_g21 );
+				float2 break16_g21 = ( 1.0 - ( temp_output_11_0_g21 / fwidth( temp_output_11_0_g21 ) ) );
+				float4 _EdgeLine142 = ( ( saturate( min( break16_g20.x , break16_g20.y ) ) + saturate( min( break16_g21.x , break16_g21.y ) ) ) * _EdgeLineColor );
+				#ifdef _SHOWEDGE_ON
+				float4 staticSwitch144 = _EdgeLine142;
+				#else
+				float4 staticSwitch144 = float4( 0,0,0,0 );
+				#endif
 				
 				
-				float3 Albedo = ( ( tex2D( _RoadTex, uv_RoadTex ) * _RoadColor ) + ( ( _OuterLine26 + _InnerLine42 ) + _DashLine53 ) ).rgb;
+				float3 Albedo = ( ( tex2D( _RoadTex, uv_RoadTex ) * _RoadColor ) + ( _OuterLine26 + _InnerLine42 + _DashLine53 + staticSwitch144 ) ).rgb;
 				float3 Emission = 0;
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
@@ -1612,7 +1660,8 @@ Shader "Vincent/Road_ASE"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			
-			
+			#pragma shader_feature_local _SHOWEDGE_ON
+
 
 			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
@@ -1641,19 +1690,22 @@ Shader "Vincent/Road_ASE"
 			CBUFFER_START(UnityPerMaterial)
 			float4 _RoadTex_ST;
 			float4 _RoadColor;
+			float4 _RoadNormal_ST;
+			float4 _EdgeLineColor;
 			float4 _OuterLineColor;
 			float4 _InnerLineColor;
 			float4 _DashLineColor;
-			float4 _RoadNormal_ST;
-			float _OuterRoadOffset;
-			float _OuterLineWidth;
-			float _InnerRoadOffset;
-			float _InnerLineWidth;
-			float _DashLineOffset;
-			float _DashLineCount;
-			float _DashLineWidth;
+			float _EdgeLineWidth;
+			float _EdgeRoadOffset;
 			float _DashSegmentLength;
+			float _DashLineCount;
 			float _Metallic;
+			float _DashLineOffset;
+			float _InnerLineWidth;
+			float _InnerRoadOffset;
+			float _OuterLineWidth;
+			float _OuterRoadOffset;
+			float _DashLineWidth;
 			float _Smoothness;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
@@ -1824,57 +1876,72 @@ Shader "Vincent/Road_ASE"
 				float2 uv_RoadTex = IN.ase_texcoord2.xy * _RoadTex_ST.xy + _RoadTex_ST.zw;
 				float2 temp_output_20_0 = ( _OuterRoadOffset * float2( 1,0 ) );
 				float2 texCoord9 = IN.ase_texcoord2.xy * float2( 1,1 ) + temp_output_20_0;
-				float2 appendResult10_g6 = (float2(_OuterLineWidth , 1.0));
-				float2 temp_output_11_0_g6 = ( abs( (texCoord9*2.0 + -1.0) ) - appendResult10_g6 );
-				float2 break16_g6 = ( 1.0 - ( temp_output_11_0_g6 / fwidth( temp_output_11_0_g6 ) ) );
+				float2 appendResult10_g18 = (float2(_OuterLineWidth , 1.0));
+				float2 temp_output_11_0_g18 = ( abs( (texCoord9*2.0 + -1.0) ) - appendResult10_g18 );
+				float2 break16_g18 = ( 1.0 - ( temp_output_11_0_g18 / fwidth( temp_output_11_0_g18 ) ) );
 				float2 texCoord11 = IN.ase_texcoord2.xy * float2( 1,1 ) + -temp_output_20_0;
-				float2 appendResult10_g5 = (float2(_OuterLineWidth , 1.0));
-				float2 temp_output_11_0_g5 = ( abs( (texCoord11*2.0 + -1.0) ) - appendResult10_g5 );
-				float2 break16_g5 = ( 1.0 - ( temp_output_11_0_g5 / fwidth( temp_output_11_0_g5 ) ) );
-				float4 _OuterLine26 = ( ( saturate( min( break16_g6.x , break16_g6.y ) ) + saturate( min( break16_g5.x , break16_g5.y ) ) ) * _OuterLineColor );
+				float2 appendResult10_g19 = (float2(_OuterLineWidth , 1.0));
+				float2 temp_output_11_0_g19 = ( abs( (texCoord11*2.0 + -1.0) ) - appendResult10_g19 );
+				float2 break16_g19 = ( 1.0 - ( temp_output_11_0_g19 / fwidth( temp_output_11_0_g19 ) ) );
+				float4 _OuterLine26 = ( ( saturate( min( break16_g18.x , break16_g18.y ) ) + saturate( min( break16_g19.x , break16_g19.y ) ) ) * _OuterLineColor );
 				float2 temp_output_32_0 = ( _InnerRoadOffset * float2( 1,0 ) );
 				float2 texCoord34 = IN.ase_texcoord2.xy * float2( 1,1 ) + temp_output_32_0;
-				float2 appendResult10_g4 = (float2(_InnerLineWidth , 1.0));
-				float2 temp_output_11_0_g4 = ( abs( (texCoord34*2.0 + -1.0) ) - appendResult10_g4 );
-				float2 break16_g4 = ( 1.0 - ( temp_output_11_0_g4 / fwidth( temp_output_11_0_g4 ) ) );
+				float2 appendResult10_g17 = (float2(_InnerLineWidth , 1.0));
+				float2 temp_output_11_0_g17 = ( abs( (texCoord34*2.0 + -1.0) ) - appendResult10_g17 );
+				float2 break16_g17 = ( 1.0 - ( temp_output_11_0_g17 / fwidth( temp_output_11_0_g17 ) ) );
 				float2 texCoord35 = IN.ase_texcoord2.xy * float2( 1,1 ) + -temp_output_32_0;
-				float2 appendResult10_g3 = (float2(_InnerLineWidth , 1.0));
-				float2 temp_output_11_0_g3 = ( abs( (texCoord35*2.0 + -1.0) ) - appendResult10_g3 );
-				float2 break16_g3 = ( 1.0 - ( temp_output_11_0_g3 / fwidth( temp_output_11_0_g3 ) ) );
-				float4 _InnerLine42 = ( ( saturate( min( break16_g4.x , break16_g4.y ) ) + saturate( min( break16_g3.x , break16_g3.y ) ) ) * _InnerLineColor );
+				float2 appendResult10_g16 = (float2(_InnerLineWidth , 1.0));
+				float2 temp_output_11_0_g16 = ( abs( (texCoord35*2.0 + -1.0) ) - appendResult10_g16 );
+				float2 break16_g16 = ( 1.0 - ( temp_output_11_0_g16 / fwidth( temp_output_11_0_g16 ) ) );
+				float4 _InnerLine42 = ( ( saturate( min( break16_g17.x , break16_g17.y ) ) + saturate( min( break16_g16.x , break16_g16.y ) ) ) * _InnerLineColor );
 				float2 appendResult79 = (float2(_DashLineOffset , _DashLineCount));
 				float2 texCoord60 = IN.ase_texcoord2.xy * appendResult79 + float2( 0,0 );
-				float2 appendResult10_g9 = (float2(_DashLineWidth , _DashSegmentLength));
-				float2 temp_output_11_0_g9 = ( abs( (frac( texCoord60 )*2.0 + -1.0) ) - appendResult10_g9 );
-				float2 break16_g9 = ( 1.0 - ( temp_output_11_0_g9 / fwidth( temp_output_11_0_g9 ) ) );
+				float2 appendResult10_g15 = (float2(_DashLineWidth , _DashSegmentLength));
+				float2 temp_output_11_0_g15 = ( abs( (frac( texCoord60 )*2.0 + -1.0) ) - appendResult10_g15 );
+				float2 break16_g15 = ( 1.0 - ( temp_output_11_0_g15 / fwidth( temp_output_11_0_g15 ) ) );
 				float2 texCoord75 = IN.ase_texcoord2.xy * float2( 1,1 ) + float2( 0.25,0 );
-				float2 appendResult10_g7 = (float2(0.5 , 1.0));
-				float2 temp_output_11_0_g7 = ( abs( (texCoord75*2.0 + -1.0) ) - appendResult10_g7 );
-				float2 break16_g7 = ( 1.0 - ( temp_output_11_0_g7 / fwidth( temp_output_11_0_g7 ) ) );
-				float temp_output_74_0 = saturate( min( break16_g7.x , break16_g7.y ) );
+				float2 appendResult10_g12 = (float2(0.5 , 1.0));
+				float2 temp_output_11_0_g12 = ( abs( (texCoord75*2.0 + -1.0) ) - appendResult10_g12 );
+				float2 break16_g12 = ( 1.0 - ( temp_output_11_0_g12 / fwidth( temp_output_11_0_g12 ) ) );
+				float temp_output_74_0 = saturate( min( break16_g12.x , break16_g12.y ) );
 				float2 appendResult82 = (float2(_DashLineOffset , _DashLineCount));
 				float2 texCoord57 = IN.ase_texcoord2.xy * appendResult82 + float2( 0,0 );
 				float cos95 = cos( radians( 180.0 ) );
 				float sin95 = sin( radians( 180.0 ) );
 				float2 rotator95 = mul( texCoord57 - float2( 0.5,0.5 ) , float2x2( cos95 , -sin95 , sin95 , cos95 )) + float2( 0.5,0.5 );
-				float2 appendResult10_g8 = (float2(_DashLineWidth , _DashSegmentLength));
-				float2 temp_output_11_0_g8 = ( abs( (frac( rotator95 )*2.0 + -1.0) ) - appendResult10_g8 );
-				float2 break16_g8 = ( 1.0 - ( temp_output_11_0_g8 / fwidth( temp_output_11_0_g8 ) ) );
+				float2 appendResult10_g14 = (float2(_DashLineWidth , _DashSegmentLength));
+				float2 temp_output_11_0_g14 = ( abs( (frac( rotator95 )*2.0 + -1.0) ) - appendResult10_g14 );
+				float2 break16_g14 = ( 1.0 - ( temp_output_11_0_g14 / fwidth( temp_output_11_0_g14 ) ) );
 				float _OuterRoadOffset106 = _OuterRoadOffset;
 				float _OuterLineWidth110 = _OuterLineWidth;
-				float2 appendResult10_g10 = (float2(( ( _OuterRoadOffset106 * 2.0 ) - _OuterLineWidth110 ) , 1.0));
-				float2 temp_output_11_0_g10 = ( abs( (IN.ase_texcoord2.xy*2.0 + -1.0) ) - appendResult10_g10 );
-				float2 break16_g10 = ( 1.0 - ( temp_output_11_0_g10 / fwidth( temp_output_11_0_g10 ) ) );
+				float2 appendResult10_g13 = (float2(( ( _OuterRoadOffset106 * 2.0 ) - _OuterLineWidth110 ) , 1.0));
+				float2 temp_output_11_0_g13 = ( abs( (IN.ase_texcoord2.xy*2.0 + -1.0) ) - appendResult10_g13 );
+				float2 break16_g13 = ( 1.0 - ( temp_output_11_0_g13 / fwidth( temp_output_11_0_g13 ) ) );
 				float _InnerRoadOffset107 = _InnerRoadOffset;
 				float _InnerLineWidth115 = _InnerLineWidth;
 				float2 appendResult10_g11 = (float2(( ( _InnerRoadOffset107 * 2.0 ) + _InnerLineWidth115 ) , 1.0));
 				float2 temp_output_11_0_g11 = ( abs( (IN.ase_texcoord2.xy*2.0 + -1.0) ) - appendResult10_g11 );
 				float2 break16_g11 = ( 1.0 - ( temp_output_11_0_g11 / fwidth( temp_output_11_0_g11 ) ) );
-				float _DashLineMask119 = ( saturate( min( break16_g10.x , break16_g10.y ) ) * ( 1.0 - saturate( min( break16_g11.x , break16_g11.y ) ) ) );
-				float4 _DashLine53 = ( ( ( ( saturate( min( break16_g9.x , break16_g9.y ) ) * temp_output_74_0 ) + ( saturate( min( break16_g8.x , break16_g8.y ) ) * ( 1.0 - temp_output_74_0 ) ) ) * _DashLineColor ) * _DashLineMask119 );
+				float _DashLineMask119 = ( saturate( min( break16_g13.x , break16_g13.y ) ) * ( 1.0 - saturate( min( break16_g11.x , break16_g11.y ) ) ) );
+				float4 _DashLine53 = ( ( ( ( saturate( min( break16_g15.x , break16_g15.y ) ) * temp_output_74_0 ) + ( saturate( min( break16_g14.x , break16_g14.y ) ) * ( 1.0 - temp_output_74_0 ) ) ) * _DashLineColor ) * _DashLineMask119 );
+				float2 temp_output_133_0 = ( _EdgeRoadOffset * float2( 1,0 ) );
+				float2 texCoord135 = IN.ase_texcoord2.xy * float2( 1,1 ) + temp_output_133_0;
+				float2 appendResult10_g20 = (float2(_EdgeLineWidth , 1.0));
+				float2 temp_output_11_0_g20 = ( abs( (texCoord135*2.0 + -1.0) ) - appendResult10_g20 );
+				float2 break16_g20 = ( 1.0 - ( temp_output_11_0_g20 / fwidth( temp_output_11_0_g20 ) ) );
+				float2 texCoord136 = IN.ase_texcoord2.xy * float2( 1,1 ) + -temp_output_133_0;
+				float2 appendResult10_g21 = (float2(_EdgeLineWidth , 1.0));
+				float2 temp_output_11_0_g21 = ( abs( (texCoord136*2.0 + -1.0) ) - appendResult10_g21 );
+				float2 break16_g21 = ( 1.0 - ( temp_output_11_0_g21 / fwidth( temp_output_11_0_g21 ) ) );
+				float4 _EdgeLine142 = ( ( saturate( min( break16_g20.x , break16_g20.y ) ) + saturate( min( break16_g21.x , break16_g21.y ) ) ) * _EdgeLineColor );
+				#ifdef _SHOWEDGE_ON
+				float4 staticSwitch144 = _EdgeLine142;
+				#else
+				float4 staticSwitch144 = float4( 0,0,0,0 );
+				#endif
 				
 				
-				float3 Albedo = ( ( tex2D( _RoadTex, uv_RoadTex ) * _RoadColor ) + ( ( _OuterLine26 + _InnerLine42 ) + _DashLine53 ) ).rgb;
+				float3 Albedo = ( ( tex2D( _RoadTex, uv_RoadTex ) * _RoadColor ) + ( _OuterLine26 + _InnerLine42 + _DashLine53 + staticSwitch144 ) ).rgb;
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 
@@ -1950,19 +2017,22 @@ Shader "Vincent/Road_ASE"
 			CBUFFER_START(UnityPerMaterial)
 			float4 _RoadTex_ST;
 			float4 _RoadColor;
+			float4 _RoadNormal_ST;
+			float4 _EdgeLineColor;
 			float4 _OuterLineColor;
 			float4 _InnerLineColor;
 			float4 _DashLineColor;
-			float4 _RoadNormal_ST;
-			float _OuterRoadOffset;
-			float _OuterLineWidth;
-			float _InnerRoadOffset;
-			float _InnerLineWidth;
-			float _DashLineOffset;
-			float _DashLineCount;
-			float _DashLineWidth;
+			float _EdgeLineWidth;
+			float _EdgeRoadOffset;
 			float _DashSegmentLength;
+			float _DashLineCount;
 			float _Metallic;
+			float _DashLineOffset;
+			float _InnerLineWidth;
+			float _InnerRoadOffset;
+			float _OuterLineWidth;
+			float _OuterRoadOffset;
+			float _DashLineWidth;
 			float _Smoothness;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
@@ -2214,7 +2284,8 @@ Shader "Vincent/Road_ASE"
 			    #define ENABLE_TERRAIN_PERPIXEL_NORMAL
 			#endif
 
-			
+			#pragma shader_feature_local _SHOWEDGE_ON
+
 
 			struct VertexInput
 			{
@@ -2249,19 +2320,22 @@ Shader "Vincent/Road_ASE"
 			CBUFFER_START(UnityPerMaterial)
 			float4 _RoadTex_ST;
 			float4 _RoadColor;
+			float4 _RoadNormal_ST;
+			float4 _EdgeLineColor;
 			float4 _OuterLineColor;
 			float4 _InnerLineColor;
 			float4 _DashLineColor;
-			float4 _RoadNormal_ST;
-			float _OuterRoadOffset;
-			float _OuterLineWidth;
-			float _InnerRoadOffset;
-			float _InnerLineWidth;
-			float _DashLineOffset;
-			float _DashLineCount;
-			float _DashLineWidth;
+			float _EdgeLineWidth;
+			float _EdgeRoadOffset;
 			float _DashSegmentLength;
+			float _DashLineCount;
 			float _Metallic;
+			float _DashLineOffset;
+			float _InnerLineWidth;
+			float _InnerRoadOffset;
+			float _OuterLineWidth;
+			float _OuterRoadOffset;
+			float _DashLineWidth;
 			float _Smoothness;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
@@ -2486,58 +2560,73 @@ Shader "Vincent/Road_ASE"
 				float2 uv_RoadTex = IN.ase_texcoord7.xy * _RoadTex_ST.xy + _RoadTex_ST.zw;
 				float2 temp_output_20_0 = ( _OuterRoadOffset * float2( 1,0 ) );
 				float2 texCoord9 = IN.ase_texcoord7.xy * float2( 1,1 ) + temp_output_20_0;
-				float2 appendResult10_g6 = (float2(_OuterLineWidth , 1.0));
-				float2 temp_output_11_0_g6 = ( abs( (texCoord9*2.0 + -1.0) ) - appendResult10_g6 );
-				float2 break16_g6 = ( 1.0 - ( temp_output_11_0_g6 / fwidth( temp_output_11_0_g6 ) ) );
+				float2 appendResult10_g18 = (float2(_OuterLineWidth , 1.0));
+				float2 temp_output_11_0_g18 = ( abs( (texCoord9*2.0 + -1.0) ) - appendResult10_g18 );
+				float2 break16_g18 = ( 1.0 - ( temp_output_11_0_g18 / fwidth( temp_output_11_0_g18 ) ) );
 				float2 texCoord11 = IN.ase_texcoord7.xy * float2( 1,1 ) + -temp_output_20_0;
-				float2 appendResult10_g5 = (float2(_OuterLineWidth , 1.0));
-				float2 temp_output_11_0_g5 = ( abs( (texCoord11*2.0 + -1.0) ) - appendResult10_g5 );
-				float2 break16_g5 = ( 1.0 - ( temp_output_11_0_g5 / fwidth( temp_output_11_0_g5 ) ) );
-				float4 _OuterLine26 = ( ( saturate( min( break16_g6.x , break16_g6.y ) ) + saturate( min( break16_g5.x , break16_g5.y ) ) ) * _OuterLineColor );
+				float2 appendResult10_g19 = (float2(_OuterLineWidth , 1.0));
+				float2 temp_output_11_0_g19 = ( abs( (texCoord11*2.0 + -1.0) ) - appendResult10_g19 );
+				float2 break16_g19 = ( 1.0 - ( temp_output_11_0_g19 / fwidth( temp_output_11_0_g19 ) ) );
+				float4 _OuterLine26 = ( ( saturate( min( break16_g18.x , break16_g18.y ) ) + saturate( min( break16_g19.x , break16_g19.y ) ) ) * _OuterLineColor );
 				float2 temp_output_32_0 = ( _InnerRoadOffset * float2( 1,0 ) );
 				float2 texCoord34 = IN.ase_texcoord7.xy * float2( 1,1 ) + temp_output_32_0;
-				float2 appendResult10_g4 = (float2(_InnerLineWidth , 1.0));
-				float2 temp_output_11_0_g4 = ( abs( (texCoord34*2.0 + -1.0) ) - appendResult10_g4 );
-				float2 break16_g4 = ( 1.0 - ( temp_output_11_0_g4 / fwidth( temp_output_11_0_g4 ) ) );
+				float2 appendResult10_g17 = (float2(_InnerLineWidth , 1.0));
+				float2 temp_output_11_0_g17 = ( abs( (texCoord34*2.0 + -1.0) ) - appendResult10_g17 );
+				float2 break16_g17 = ( 1.0 - ( temp_output_11_0_g17 / fwidth( temp_output_11_0_g17 ) ) );
 				float2 texCoord35 = IN.ase_texcoord7.xy * float2( 1,1 ) + -temp_output_32_0;
-				float2 appendResult10_g3 = (float2(_InnerLineWidth , 1.0));
-				float2 temp_output_11_0_g3 = ( abs( (texCoord35*2.0 + -1.0) ) - appendResult10_g3 );
-				float2 break16_g3 = ( 1.0 - ( temp_output_11_0_g3 / fwidth( temp_output_11_0_g3 ) ) );
-				float4 _InnerLine42 = ( ( saturate( min( break16_g4.x , break16_g4.y ) ) + saturate( min( break16_g3.x , break16_g3.y ) ) ) * _InnerLineColor );
+				float2 appendResult10_g16 = (float2(_InnerLineWidth , 1.0));
+				float2 temp_output_11_0_g16 = ( abs( (texCoord35*2.0 + -1.0) ) - appendResult10_g16 );
+				float2 break16_g16 = ( 1.0 - ( temp_output_11_0_g16 / fwidth( temp_output_11_0_g16 ) ) );
+				float4 _InnerLine42 = ( ( saturate( min( break16_g17.x , break16_g17.y ) ) + saturate( min( break16_g16.x , break16_g16.y ) ) ) * _InnerLineColor );
 				float2 appendResult79 = (float2(_DashLineOffset , _DashLineCount));
 				float2 texCoord60 = IN.ase_texcoord7.xy * appendResult79 + float2( 0,0 );
-				float2 appendResult10_g9 = (float2(_DashLineWidth , _DashSegmentLength));
-				float2 temp_output_11_0_g9 = ( abs( (frac( texCoord60 )*2.0 + -1.0) ) - appendResult10_g9 );
-				float2 break16_g9 = ( 1.0 - ( temp_output_11_0_g9 / fwidth( temp_output_11_0_g9 ) ) );
+				float2 appendResult10_g15 = (float2(_DashLineWidth , _DashSegmentLength));
+				float2 temp_output_11_0_g15 = ( abs( (frac( texCoord60 )*2.0 + -1.0) ) - appendResult10_g15 );
+				float2 break16_g15 = ( 1.0 - ( temp_output_11_0_g15 / fwidth( temp_output_11_0_g15 ) ) );
 				float2 texCoord75 = IN.ase_texcoord7.xy * float2( 1,1 ) + float2( 0.25,0 );
-				float2 appendResult10_g7 = (float2(0.5 , 1.0));
-				float2 temp_output_11_0_g7 = ( abs( (texCoord75*2.0 + -1.0) ) - appendResult10_g7 );
-				float2 break16_g7 = ( 1.0 - ( temp_output_11_0_g7 / fwidth( temp_output_11_0_g7 ) ) );
-				float temp_output_74_0 = saturate( min( break16_g7.x , break16_g7.y ) );
+				float2 appendResult10_g12 = (float2(0.5 , 1.0));
+				float2 temp_output_11_0_g12 = ( abs( (texCoord75*2.0 + -1.0) ) - appendResult10_g12 );
+				float2 break16_g12 = ( 1.0 - ( temp_output_11_0_g12 / fwidth( temp_output_11_0_g12 ) ) );
+				float temp_output_74_0 = saturate( min( break16_g12.x , break16_g12.y ) );
 				float2 appendResult82 = (float2(_DashLineOffset , _DashLineCount));
 				float2 texCoord57 = IN.ase_texcoord7.xy * appendResult82 + float2( 0,0 );
 				float cos95 = cos( radians( 180.0 ) );
 				float sin95 = sin( radians( 180.0 ) );
 				float2 rotator95 = mul( texCoord57 - float2( 0.5,0.5 ) , float2x2( cos95 , -sin95 , sin95 , cos95 )) + float2( 0.5,0.5 );
-				float2 appendResult10_g8 = (float2(_DashLineWidth , _DashSegmentLength));
-				float2 temp_output_11_0_g8 = ( abs( (frac( rotator95 )*2.0 + -1.0) ) - appendResult10_g8 );
-				float2 break16_g8 = ( 1.0 - ( temp_output_11_0_g8 / fwidth( temp_output_11_0_g8 ) ) );
+				float2 appendResult10_g14 = (float2(_DashLineWidth , _DashSegmentLength));
+				float2 temp_output_11_0_g14 = ( abs( (frac( rotator95 )*2.0 + -1.0) ) - appendResult10_g14 );
+				float2 break16_g14 = ( 1.0 - ( temp_output_11_0_g14 / fwidth( temp_output_11_0_g14 ) ) );
 				float _OuterRoadOffset106 = _OuterRoadOffset;
 				float _OuterLineWidth110 = _OuterLineWidth;
-				float2 appendResult10_g10 = (float2(( ( _OuterRoadOffset106 * 2.0 ) - _OuterLineWidth110 ) , 1.0));
-				float2 temp_output_11_0_g10 = ( abs( (IN.ase_texcoord7.xy*2.0 + -1.0) ) - appendResult10_g10 );
-				float2 break16_g10 = ( 1.0 - ( temp_output_11_0_g10 / fwidth( temp_output_11_0_g10 ) ) );
+				float2 appendResult10_g13 = (float2(( ( _OuterRoadOffset106 * 2.0 ) - _OuterLineWidth110 ) , 1.0));
+				float2 temp_output_11_0_g13 = ( abs( (IN.ase_texcoord7.xy*2.0 + -1.0) ) - appendResult10_g13 );
+				float2 break16_g13 = ( 1.0 - ( temp_output_11_0_g13 / fwidth( temp_output_11_0_g13 ) ) );
 				float _InnerRoadOffset107 = _InnerRoadOffset;
 				float _InnerLineWidth115 = _InnerLineWidth;
 				float2 appendResult10_g11 = (float2(( ( _InnerRoadOffset107 * 2.0 ) + _InnerLineWidth115 ) , 1.0));
 				float2 temp_output_11_0_g11 = ( abs( (IN.ase_texcoord7.xy*2.0 + -1.0) ) - appendResult10_g11 );
 				float2 break16_g11 = ( 1.0 - ( temp_output_11_0_g11 / fwidth( temp_output_11_0_g11 ) ) );
-				float _DashLineMask119 = ( saturate( min( break16_g10.x , break16_g10.y ) ) * ( 1.0 - saturate( min( break16_g11.x , break16_g11.y ) ) ) );
-				float4 _DashLine53 = ( ( ( ( saturate( min( break16_g9.x , break16_g9.y ) ) * temp_output_74_0 ) + ( saturate( min( break16_g8.x , break16_g8.y ) ) * ( 1.0 - temp_output_74_0 ) ) ) * _DashLineColor ) * _DashLineMask119 );
+				float _DashLineMask119 = ( saturate( min( break16_g13.x , break16_g13.y ) ) * ( 1.0 - saturate( min( break16_g11.x , break16_g11.y ) ) ) );
+				float4 _DashLine53 = ( ( ( ( saturate( min( break16_g15.x , break16_g15.y ) ) * temp_output_74_0 ) + ( saturate( min( break16_g14.x , break16_g14.y ) ) * ( 1.0 - temp_output_74_0 ) ) ) * _DashLineColor ) * _DashLineMask119 );
+				float2 temp_output_133_0 = ( _EdgeRoadOffset * float2( 1,0 ) );
+				float2 texCoord135 = IN.ase_texcoord7.xy * float2( 1,1 ) + temp_output_133_0;
+				float2 appendResult10_g20 = (float2(_EdgeLineWidth , 1.0));
+				float2 temp_output_11_0_g20 = ( abs( (texCoord135*2.0 + -1.0) ) - appendResult10_g20 );
+				float2 break16_g20 = ( 1.0 - ( temp_output_11_0_g20 / fwidth( temp_output_11_0_g20 ) ) );
+				float2 texCoord136 = IN.ase_texcoord7.xy * float2( 1,1 ) + -temp_output_133_0;
+				float2 appendResult10_g21 = (float2(_EdgeLineWidth , 1.0));
+				float2 temp_output_11_0_g21 = ( abs( (texCoord136*2.0 + -1.0) ) - appendResult10_g21 );
+				float2 break16_g21 = ( 1.0 - ( temp_output_11_0_g21 / fwidth( temp_output_11_0_g21 ) ) );
+				float4 _EdgeLine142 = ( ( saturate( min( break16_g20.x , break16_g20.y ) ) + saturate( min( break16_g21.x , break16_g21.y ) ) ) * _EdgeLineColor );
+				#ifdef _SHOWEDGE_ON
+				float4 staticSwitch144 = _EdgeLine142;
+				#else
+				float4 staticSwitch144 = float4( 0,0,0,0 );
+				#endif
 				
 				float2 uv_RoadNormal = IN.ase_texcoord7.xy * _RoadNormal_ST.xy + _RoadNormal_ST.zw;
 				
-				float3 Albedo = ( ( tex2D( _RoadTex, uv_RoadTex ) * _RoadColor ) + ( ( _OuterLine26 + _InnerLine42 ) + _DashLine53 ) ).rgb;
+				float3 Albedo = ( ( tex2D( _RoadTex, uv_RoadTex ) * _RoadColor ) + ( _OuterLine26 + _InnerLine42 + _DashLine53 + staticSwitch144 ) ).rgb;
 				float3 Normal = UnpackNormalScale( tex2D( _RoadNormal, uv_RoadNormal ), 1.0f );
 				float3 Emission = 0;
 				float3 Specular = 0.5;
@@ -2699,183 +2788,212 @@ Shader "Vincent/Road_ASE"
 }
 /*ASEBEGIN
 Version=18935
-0;541;967;458;719.553;-118.8605;1;True;False
+8;81;1904;912;2863.635;669.1649;1.248415;True;False
 Node;AmplifyShaderEditor.CommentaryNode;45;-5438.838,-73.44467;Inherit;False;2288.376;788.6422;Comment;15;32;31;34;36;35;30;41;38;37;40;33;39;42;107;115;Inner Line;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;48;-5901.103,1013.303;Inherit;False;4188.838;1212.533;Comment;25;53;55;50;52;78;77;76;49;54;74;64;62;63;61;75;60;95;100;57;79;82;80;81;120;121;Inner Line;1,1,1,1;0;0
-Node;AmplifyShaderEditor.RangedFloatNode;31;-5417.838,-11.44451;Inherit;False;Property;_InnerRoadOffset;Inner Road Offset;10;0;Create;True;0;0;0;False;0;False;0.08;0.3;0.02;0.2;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;31;-5417.838,-11.44451;Inherit;False;Property;_InnerRoadOffset;Inner Road Offset;14;0;Create;True;0;0;0;False;0;False;0.08;0.08;0.02;0.2;0;1;FLOAT;0
 Node;AmplifyShaderEditor.CommentaryNode;46;-5362.034,-997.5271;Inherit;False;2214.98;788.6417;Comment;15;21;19;20;22;11;10;8;12;28;23;27;26;9;106;110;Outer Line;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;122;-5530.925,2749.268;Inherit;False;2154.421;747.2498;Comment;13;109;108;114;116;111;105;113;104;112;117;103;118;119;DashLine Mask;1,1,1,1;0;0
-Node;AmplifyShaderEditor.RangedFloatNode;81;-5817.471,1487.529;Inherit;False;Property;_DashLineCount;Dash Line Count;15;0;Create;True;0;0;0;False;0;False;4.21;2;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;80;-5772.821,1212.548;Inherit;False;Property;_DashLineOffset;Dash Line Offset;14;0;Create;True;0;0;0;False;0;False;2.08;2;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;81;-5817.471,1487.529;Inherit;False;Property;_DashLineCount;Dash Line Count;19;0;Create;True;0;0;0;False;0;False;4.21;3;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;80;-5772.821,1212.548;Inherit;False;Property;_DashLineOffset;Dash Line Offset;18;0;Create;True;0;0;0;False;0;False;2.08;2;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;107;-5100.6,-10.37549;Inherit;False;_InnerRoadOffset;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;21;-5338.034,-923.5271;Inherit;False;Property;_OuterRoadOffset;Outer Road Offset;7;0;Create;True;0;0;0;False;0;False;0.4;0.3;0.1;0.5;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;36;-4853.238,218.4555;Inherit;False;Property;_InnerLineWidth;Inner Line Width;9;0;Create;True;0;0;0;False;0;False;0.01;0;0.01;0.3;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;115;-4554.628,224.9797;Inherit;False;_InnerLineWidth;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;36;-4853.238,218.4555;Inherit;False;Property;_InnerLineWidth;Inner Line Width;13;0;Create;True;0;0;0;False;0;False;0.01;0.001;0.01;0.3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;21;-5338.034,-923.5271;Inherit;False;Property;_OuterRoadOffset;Outer Road Offset;11;0;Create;True;0;0;0;False;0;False;0.4;0.4;0.1;0.5;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;106;-5020.667,-927.8215;Inherit;False;_OuterRoadOffset;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;109;-5480.925,3213.231;Inherit;False;107;_InnerRoadOffset;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;10;-4784.034,-706.5273;Inherit;False;Property;_OuterLineWidth;Outer Line Width;6;0;Create;True;0;0;0;False;0;False;0.01;0;0.01;0.3;0;1;FLOAT;0
 Node;AmplifyShaderEditor.DynamicAppendNode;82;-5442.601,1543.87;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.RangedFloatNode;10;-4784.034,-706.5273;Inherit;False;Property;_OuterLineWidth;Outer Line Width;10;0;Create;True;0;0;0;False;0;False;0.01;0.01;0.01;0.3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;115;-4554.628,224.9797;Inherit;False;_InnerLineWidth;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.GetLocalVarNode;109;-5480.925,3213.231;Inherit;False;107;_InnerRoadOffset;1;0;OBJECT;;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RadiansOpNode;100;-5126.22,1715.017;Inherit;False;1;0;FLOAT;180;False;1;FLOAT;0
+Node;AmplifyShaderEditor.GetLocalVarNode;108;-5480.52,2804.208;Inherit;False;106;_OuterRoadOffset;1;0;OBJECT;;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;110;-4486.737,-704.2734;Inherit;False;_OuterLineWidth;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;128;-5336.499,-1764.685;Inherit;False;Property;_EdgeRoadOffset;Edge Road Offset;8;0;Create;True;0;0;0;False;0;False;0.4;0.455;0.3;0.5;0;1;FLOAT;0
+Node;AmplifyShaderEditor.DynamicAppendNode;79;-5304.899,1332.094;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;57;-5233.805,1547.697;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;3.88,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.Vector2Node;19;-5259.034,-774.5272;Inherit;False;Constant;_10;1,0;1;0;Create;True;0;0;0;False;0;False;1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.Vector2Node;131;-5257.499,-1615.685;Inherit;False;Constant;_11;1,0;1;0;Create;True;0;0;0;False;0;False;1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;114;-5114.472,3200.139;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;116;-5021.037,3314.478;Inherit;False;115;_InnerLineWidth;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.Vector2Node;30;-5335.838,149.5556;Inherit;False;Constant;_Vector0;Vector 0;1;0;Create;True;0;0;0;False;0;False;1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
-Node;AmplifyShaderEditor.RegisterLocalVarNode;110;-4486.737,-704.2734;Inherit;False;_OuterLineWidth;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.DynamicAppendNode;79;-5304.899,1332.094;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.GetLocalVarNode;108;-5480.52,2804.208;Inherit;False;106;_OuterRoadOffset;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RadiansOpNode;100;-5126.22,1715.017;Inherit;False;1;0;FLOAT;180;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;111;-5058.825,3079.51;Inherit;False;110;_OuterLineWidth;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RotatorNode;95;-4960.087,1551.958;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT2;0.5,0.5;False;2;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;20;-4933.034,-824.5272;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;32;-5138.837,79.55545;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.TextureCoordinatesNode;75;-4577.898,1968.536;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0.25,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;133;-4931.499,-1665.685;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;113;-4738.671,3228.217;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.Vector2Node;19;-5259.034,-774.5272;Inherit;False;Constant;_10;1,0;1;0;Create;True;0;0;0;False;0;False;1,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;105;-5100.581,2799.268;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;60;-5053.504,1073.596;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleSubtractOpNode;104;-4804.581,2857.268;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FractNode;63;-4711.065,1080.093;Inherit;True;1;0;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.NegateNode;33;-4985.836,325.5556;Inherit;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.NegateNode;22;-4909.034,-598.5273;Inherit;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.RotatorNode;95;-4960.087,1551.958;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT2;0.5,0.5;False;2;FLOAT;1;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.GetLocalVarNode;111;-5058.825,3079.51;Inherit;False;110;_OuterLineWidth;1;0;OBJECT;;False;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;75;-4577.898,1968.536;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0.25,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;32;-5138.837,79.55545;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.RangedFloatNode;61;-5025.416,1348.399;Inherit;False;Property;_DashLineWidth;Dash Line Width;16;0;Create;True;0;0;0;False;0;False;0.01;0.01;0.01;0.3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;74;-4317.925,1972.53;Inherit;True;Rectangle;-1;;12;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.FractNode;64;-4685.793,1526.427;Inherit;True;1;0;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.RangedFloatNode;61;-5025.416,1348.399;Inherit;False;Property;_DashLineWidth;Dash Line Width;12;0;Create;True;0;0;0;False;0;False;0.01;0;0.01;0.3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.NegateNode;134;-4907.499,-1439.685;Inherit;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.FractNode;63;-4711.065,1080.093;Inherit;True;1;0;FLOAT2;0,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.FunctionNode;112;-4491.67,3242.518;Inherit;True;Rectangle;-1;;11;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;62;-4528.567,1376.901;Inherit;False;Property;_DashSegmentLength;Dash Segment Length;13;0;Create;True;0;0;0;False;0;False;0.5;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode;74;-4317.925,1972.53;Inherit;True;Rectangle;-1;;7;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode;103;-4464.369,2856.602;Inherit;True;Rectangle;-1;;10;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TextureCoordinatesNode;34;-4669.838,-23.44471;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.FunctionNode;49;-4317.952,1534.539;Inherit;True;Rectangle;-1;;8;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TextureCoordinatesNode;9;-4593.034,-947.5271;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.FunctionNode;54;-4291.283,1157.673;Inherit;True;Rectangle;-1;;9;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TextureCoordinatesNode;11;-4653.034,-520.5273;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.TextureCoordinatesNode;35;-4729.838,403.5557;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleSubtractOpNode;104;-4804.581,2857.268;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;62;-4528.567,1376.901;Inherit;False;Property;_DashSegmentLength;Dash Segment Length;17;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;20;-4933.034,-824.5272;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.NegateNode;33;-4985.836,325.5556;Inherit;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;136;-4651.499,-1361.685;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;130;-4782.499,-1547.685;Inherit;False;Property;_EdgeLineWidth;Edge Line Width;7;0;Create;True;0;0;0;False;0;False;0.01;0.1;0.1;0.3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;135;-4591.499,-1788.685;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.OneMinusNode;117;-4177.504,3238.136;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;49;-4317.952,1534.539;Inherit;True;Rectangle;-1;;14;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode;76;-3951.398,1963.736;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;77;-3673.098,1253.638;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode;37;-4384.838,440.5557;Inherit;True;Rectangle;-1;;3;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode;38;-4350.838,69.55544;Inherit;True;Rectangle;-1;;4;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;118;-3879.505,2972.136;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode;8;-4274.035,-854.5273;Inherit;True;Rectangle;-1;;6;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;54;-4291.283,1157.673;Inherit;True;Rectangle;-1;;15;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.NegateNode;22;-4909.034,-598.5273;Inherit;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.FunctionNode;103;-4464.369,2856.602;Inherit;True;Rectangle;-1;;13;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;138;-4306.5,-1324.685;Inherit;True;Rectangle;-1;;21;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;78;-3670.499,1495.438;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode;12;-4308.035,-483.5273;Inherit;True;Rectangle;-1;;5;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;35;-4729.838,403.5557;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TextureCoordinatesNode;34;-4669.838,-23.44471;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;77;-3673.098,1253.638;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;9;-4593.034,-947.5271;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TextureCoordinatesNode;11;-4653.034,-520.5273;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;118;-3879.505,2972.136;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;137;-4272.5,-1695.685;Inherit;True;Rectangle;-1;;20;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;37;-4384.838,440.5557;Inherit;True;Rectangle;-1;;16;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;38;-4350.838,69.55544;Inherit;True;Rectangle;-1;;17;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;12;-4308.035,-483.5273;Inherit;True;Rectangle;-1;;19;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;8;-4274.035,-854.5273;Inherit;True;Rectangle;-1;;18;6b23e0c975270fb4084c354b2c83366a;0;3;1;FLOAT2;0,0;False;2;FLOAT;0.5;False;3;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode;140;-3877.506,-1262.043;Inherit;False;Property;_EdgeLineColor;Edge Line Color;5;1;[Header];Create;True;1;Edge Line;0;0;False;0;False;1,1,1,1;1,0.240566,0.240566,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleAddOpNode;50;-3326.916,1313.306;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;23;-3892.806,-670.9;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;40;-3969.61,253.1831;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;52;-3313.151,1563.321;Inherit;False;Property;_DashLineColor;Dash Line Color;11;1;[Header];Create;True;1;Dash Line;0;0;False;0;False;1,1,1,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.ColorNode;39;-3955.845,503.1976;Inherit;False;Property;_InnerLineColor;Inner Line Color;8;1;[Header];Create;True;1;Inner Line;0;0;False;0;False;0.9535638,1,0.2971698,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;52;-3313.151,1563.321;Inherit;False;Property;_DashLineColor;Dash Line Color;15;1;[Header];Create;True;1;Dash Line;0;0;False;0;False;1,1,1,1;1,1,1,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleAddOpNode;139;-3891.27,-1512.058;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;119;-3603.505,2976.136;Inherit;False;_DashLineMask;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;28;-3879.042,-420.8854;Inherit;False;Property;_OuterLineColor;Outer Line Color;5;1;[Header];Create;True;1;Outer Line;0;0;False;0;False;1,1,1,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleAddOpNode;23;-3892.806,-670.9;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;120;-2730.96,1671.196;Inherit;False;119;_DashLineMask;1;0;OBJECT;;False;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode;28;-3879.042,-420.8854;Inherit;False;Property;_OuterLineColor;Outer Line Color;9;1;[Header];Create;True;1;Outer Line;0;0;False;0;False;1,1,1,1;1,1,1,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleAddOpNode;40;-3969.61,253.1831;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;55;-2908.301,1346.646;Inherit;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ColorNode;39;-3955.845,503.1976;Inherit;False;Property;_InnerLineColor;Inner Line Color;12;1;[Header];Create;True;1;Inner Line;0;0;False;0;False;0.9535638,1,0.2971698,1;0.9535637,1,0.2971697,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;141;-3604.439,-1485.374;Inherit;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;142;-3369.519,-1501.35;Inherit;False;_EdgeLine;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;121;-2457.128,1338.384;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;27;-3570.042,-642.8855;Inherit;False;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;41;-3646.845,281.1975;Inherit;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;42;-3374.463,266.6665;Inherit;False;_InnerLine;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;121;-2457.128,1338.384;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;26;-3371.054,-660.1924;Inherit;False;_OuterLine;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.GetLocalVarNode;44;-1656.441,22.97858;Inherit;False;42;_InnerLine;1;0;OBJECT;;False;1;COLOR;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;53;-2147.411,1365.297;Inherit;False;_DashLine;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.GetLocalVarNode;29;-1658.287,-150.9642;Inherit;False;26;_OuterLine;1;0;OBJECT;;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;43;-1349.109,-77.77714;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.GetLocalVarNode;98;-1442.696,241.842;Inherit;False;53;_DashLine;1;0;OBJECT;;False;1;COLOR;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;42;-3374.463,266.6665;Inherit;False;_InnerLine;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;26;-3371.054,-660.1924;Inherit;False;_OuterLine;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.GetLocalVarNode;143;-1734.186,203.5768;Inherit;False;142;_EdgeLine;1;0;OBJECT;;False;1;COLOR;0
+Node;AmplifyShaderEditor.GetLocalVarNode;98;-1685.076,54.40195;Inherit;False;53;_DashLine;1;0;OBJECT;;False;1;COLOR;0
 Node;AmplifyShaderEditor.SamplerNode;123;-1067.483,-523.644;Inherit;True;Property;_RoadTex;Road Tex;0;1;[Header];Create;True;1;Road;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.ColorNode;24;-1062.719,-296.0273;Inherit;False;Property;_RoadColor;Road Color;2;0;Create;True;0;0;0;False;0;False;0.2641509,0.2641509,0.2641509,1;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleAddOpNode;97;-969.1924,49.48135;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.GetLocalVarNode;44;-1677.447,-49.73529;Inherit;False;42;_InnerLine;1;0;OBJECT;;False;1;COLOR;0
+Node;AmplifyShaderEditor.GetLocalVarNode;29;-1658.287,-150.9642;Inherit;False;26;_OuterLine;1;0;OBJECT;;False;1;COLOR;0
+Node;AmplifyShaderEditor.ColorNode;24;-1062.719,-296.0273;Inherit;False;Property;_RoadColor;Road Color;2;0;Create;True;0;0;0;False;0;False;0.2641509,0.2641509,0.2641509,1;0.3018867,0.3018867,0.3018867,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.StaticSwitch;144;-1525.595,165.1685;Inherit;False;Property;_ShowEdge;Show Edge;6;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;124;-644.4832,-427.644;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;126;-110.1396,137.7571;Inherit;False;Property;_Metallic;Metallic;3;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;43;-1349.109,-77.77714;Inherit;True;4;4;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SamplerNode;125;-567.5566,71.34418;Inherit;True;Property;_RoadNormal;Road Normal;1;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleAddOpNode;25;-411.055,-67.20282;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;127;-108.1396,229.7571;Inherit;False;Property;_Smoothness;Smoothness;4;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=ShadowCaster;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.RangedFloatNode;127;-108.1396,229.7571;Inherit;False;Property;_Smoothness;Smoothness;4;0;Create;True;0;0;0;False;0;False;0;0.1;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;126;-110.1396,137.7571;Inherit;False;Property;_Metallic;Metallic;3;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;25;-432.0614,-193.2401;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;6;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthNormals;0;6;DepthNormals;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=DepthNormals;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=DepthOnly;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;173,7;Float;False;True;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;Vincent/Road_ASE;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;18;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=UniversalForward;False;False;0;Hidden/InternalErrorShader;0;0;Standard;38;Workflow;1;0;Surface;0;0;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Fragment Normal Space,InvertActionOnDeselection;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,-1;0;Translucency;0;0;  Translucency Strength;1,False,-1;0;  Normal Distortion;0.5,False,-1;0;  Scattering;2,False,-1;0;  Direct;0.9,False,-1;0;  Ambient;0.1,False,-1;0;  Shadow;0.5,False,-1;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;Receive Shadows;1;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;DOTS Instancing;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,-1;0;  Type;0;0;  Tess;16,False,-1;0;  Min;10,False,-1;0;  Max;25,False,-1;0;  Edge Length;16,False,-1;0;  Max Displacement;25,False,-1;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;0;0;8;False;True;True;True;True;True;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=ShadowCaster;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;5;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;Universal2D;0;5;Universal2D;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=Universal2D;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;4;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;Meta;0;4;Meta;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;0;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;173,7;Float;False;True;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;Vincent/Road_ASE;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;18;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=UniversalForward;False;False;0;Hidden/InternalErrorShader;0;0;Standard;38;Workflow;1;0;Surface;0;0;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Fragment Normal Space,InvertActionOnDeselection;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,-1;0;Translucency;0;0;  Translucency Strength;1,False,-1;0;  Normal Distortion;0.5,False,-1;0;  Scattering;2,False,-1;0;  Direct;0.9,False,-1;0;  Ambient;0.1,False,-1;0;  Shadow;0.5,False,-1;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;Receive Shadows;1;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;DOTS Instancing;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,-1;0;  Type;0;0;  Tess;16,False,-1;0;  Min;10,False,-1;0;  Max;25,False,-1;0;  Edge Length;16,False,-1;0;  Max Displacement;25,False,-1;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;0;0;8;False;True;True;True;True;True;True;True;False;;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;7;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;GBuffer;0;7;GBuffer;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=UniversalGBuffer;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=DepthOnly;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 WireConnection;107;0;31;0
-WireConnection;115;0;36;0
 WireConnection;106;0;21;0
 WireConnection;82;0;80;0
 WireConnection;82;1;81;0
-WireConnection;57;0;82;0
-WireConnection;114;0;109;0
+WireConnection;115;0;36;0
 WireConnection;110;0;10;0
 WireConnection;79;0;80;0
 WireConnection;79;1;81;0
-WireConnection;95;0;57;0
-WireConnection;95;2;100;0
-WireConnection;20;0;21;0
-WireConnection;20;1;19;0
-WireConnection;32;0;31;0
-WireConnection;32;1;30;0
+WireConnection;57;0;82;0
+WireConnection;114;0;109;0
+WireConnection;133;0;128;0
+WireConnection;133;1;131;0
 WireConnection;113;0;114;0
 WireConnection;113;1;116;0
 WireConnection;105;0;108;0
 WireConnection;60;0;79;0
+WireConnection;95;0;57;0
+WireConnection;95;2;100;0
+WireConnection;32;0;31;0
+WireConnection;32;1;30;0
+WireConnection;74;1;75;0
+WireConnection;64;0;95;0
+WireConnection;134;0;133;0
+WireConnection;63;0;60;0
+WireConnection;112;2;113;0
 WireConnection;104;0;105;0
 WireConnection;104;1;111;0
-WireConnection;63;0;60;0
+WireConnection;20;0;21;0
+WireConnection;20;1;19;0
 WireConnection;33;0;32;0
-WireConnection;22;0;20;0
-WireConnection;64;0;95;0
-WireConnection;112;2;113;0
-WireConnection;74;1;75;0
-WireConnection;103;2;104;0
-WireConnection;34;1;32;0
+WireConnection;136;1;134;0
+WireConnection;135;1;133;0
+WireConnection;117;0;112;0
 WireConnection;49;1;64;0
 WireConnection;49;2;61;0
 WireConnection;49;3;62;0
-WireConnection;9;1;20;0
+WireConnection;76;0;74;0
 WireConnection;54;1;63;0
 WireConnection;54;2;61;0
 WireConnection;54;3;62;0
-WireConnection;11;1;22;0
+WireConnection;22;0;20;0
+WireConnection;103;2;104;0
+WireConnection;138;1;136;0
+WireConnection;138;2;130;0
+WireConnection;78;0;49;0
+WireConnection;78;1;76;0
 WireConnection;35;1;33;0
-WireConnection;117;0;112;0
-WireConnection;76;0;74;0
+WireConnection;34;1;32;0
 WireConnection;77;0;54;0
 WireConnection;77;1;74;0
+WireConnection;9;1;20;0
+WireConnection;11;1;22;0
+WireConnection;118;0;103;0
+WireConnection;118;1;117;0
+WireConnection;137;1;135;0
+WireConnection;137;2;130;0
 WireConnection;37;1;35;0
 WireConnection;37;2;36;0
 WireConnection;38;1;34;0
 WireConnection;38;2;36;0
-WireConnection;118;0;103;0
-WireConnection;118;1;117;0
-WireConnection;8;1;9;0
-WireConnection;8;2;10;0
-WireConnection;78;0;49;0
-WireConnection;78;1;76;0
 WireConnection;12;1;11;0
 WireConnection;12;2;10;0
+WireConnection;8;1;9;0
+WireConnection;8;2;10;0
 WireConnection;50;0;77;0
 WireConnection;50;1;78;0
+WireConnection;139;0;137;0
+WireConnection;139;1;138;0
+WireConnection;119;0;118;0
 WireConnection;23;0;8;0
 WireConnection;23;1;12;0
 WireConnection;40;0;38;0
 WireConnection;40;1;37;0
-WireConnection;119;0;118;0
 WireConnection;55;0;50;0
 WireConnection;55;1;52;0
+WireConnection;141;0;139;0
+WireConnection;141;1;140;0
+WireConnection;142;0;141;0
+WireConnection;121;0;55;0
+WireConnection;121;1;120;0
 WireConnection;27;0;23;0
 WireConnection;27;1;28;0
 WireConnection;41;0;40;0
 WireConnection;41;1;39;0
-WireConnection;42;0;41;0
-WireConnection;121;0;55;0
-WireConnection;121;1;120;0
-WireConnection;26;0;27;0
 WireConnection;53;0;121;0
-WireConnection;43;0;29;0
-WireConnection;43;1;44;0
-WireConnection;97;0;43;0
-WireConnection;97;1;98;0
+WireConnection;42;0;41;0
+WireConnection;26;0;27;0
+WireConnection;144;0;143;0
 WireConnection;124;0;123;0
 WireConnection;124;1;24;0
+WireConnection;43;0;29;0
+WireConnection;43;1;44;0
+WireConnection;43;2;98;0
+WireConnection;43;3;144;0
 WireConnection;25;0;124;0
-WireConnection;25;1;97;0
+WireConnection;25;1;43;0
 WireConnection;1;0;25;0
 WireConnection;1;1;125;0
 WireConnection;1;3;126;0
 WireConnection;1;4;127;0
 ASEEND*/
-//CHKSM=2E3207C31F2BF362B7974DED374E4E642D510C0F
+//CHKSM=7AAC0A3452CE00FC240DAA21EDE04839D08C86E1
